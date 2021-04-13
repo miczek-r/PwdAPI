@@ -10,5 +10,11 @@ namespace ZarzadzanieDomem.IRepositories
     {
         public IEnumerable<User> GetUsers();
         void Save();
+        void AddUser(User value);
+        void Update(User value);
+        void Delete(int id);
+        User GetUserById(int id);
+
+
     }
 }

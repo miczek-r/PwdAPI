@@ -32,27 +32,33 @@ namespace ZarzadzanieDomem.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public User Get(int id)
         {
-            return "value";
+            return userRepository.GetUserById(id);
         }
 
         // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] User value)
         {
+            userRepository.AddUser(value);
+            userRepository.Save();
         }
 
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT api/<UserController>
+        [HttpPut]
+        public void Put([FromBody] User value)
         {
+            userRepository.Update(value);
+            userRepository.Save();
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            userRepository.Delete(id);
+            userRepository.Save();
         }
     }
 }
