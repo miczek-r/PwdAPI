@@ -17,6 +17,7 @@ namespace ZarzadzanieDomem
 {
     public class Startup
     {
+        private const string CorsPolicyName = "MyPolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -37,6 +38,18 @@ namespace ZarzadzanieDomem
             services.AddControllers();
 
             services.AddSwaggerGen();
+            services.AddCors(o => o.AddPolicy(CorsPolicyName, builder =>
+
+            {
+
+                builder.AllowAnyOrigin()
+
+                       .AllowAnyMethod()
+
+                       .AllowAnyHeader();
+
+            }));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
