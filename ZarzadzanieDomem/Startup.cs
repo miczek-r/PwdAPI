@@ -29,10 +29,10 @@ namespace ZarzadzanieDomem
         {
 #if DEBUG
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseMySQL(Configuration.GetConnectionString("DockerDB")));
+                options.UseMySql(Configuration.GetConnectionString("DockerDB"), new MySqlServerVersion(new Version(8, 0, 21))));
 #else
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseMySQL(Configuration.GetConnectionString("Production")));
+                options.UseMySql(Configuration.GetConnectionString("Production")));
 #endif
             services.AddControllers();
 
