@@ -18,9 +18,9 @@ namespace ZarzadzanieDomem.Controllers
     {
         private IUserRepository userRepository;
 
-        public UserController()
+        public UserController(DatabaseContext context)
         {
-            userRepository = new UserRepository(new DatabaseContext());
+            userRepository = new UserRepository(context);
         }
 
         // GET: api/<UserController>
