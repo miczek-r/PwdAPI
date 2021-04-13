@@ -13,10 +13,12 @@ namespace ZarzadzanieDomem.Models.Context
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Home> Homes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("User");
+            modelBuilder.Entity<Home>().ToTable("Home");
         }
     }
 }

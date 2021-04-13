@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZarzadzanieDomem.Models.Context;
 
 namespace ZarzadzanieDomem.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210413144048_Home_User")]
+    partial class Home_User
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,8 +48,8 @@ namespace ZarzadzanieDomem.Migrations
                     b.Property<int?>("HomeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<int>("LastName")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId");
 
