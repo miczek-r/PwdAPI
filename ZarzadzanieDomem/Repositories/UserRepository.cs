@@ -53,7 +53,7 @@ namespace ZarzadzanieDomem.Repositories
         public User GetUserById(int id)
         {
             return _context.Users.Find(id);
-
+            
         }
     }
 }

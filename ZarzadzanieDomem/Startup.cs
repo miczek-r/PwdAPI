@@ -33,7 +33,7 @@ namespace ZarzadzanieDomem
                 options.UseMySql(Configuration.GetConnectionString("DockerDB"), new MySqlServerVersion(new Version(8, 0, 21))));
 #else
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("Production")));
+                options.UseMySql(Configuration.GetConnectionString("Production"), new MySqlServerVersion(new Version(8, 0, 21))));
 #endif
             services.AddControllers();
 
