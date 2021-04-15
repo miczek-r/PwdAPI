@@ -33,7 +33,7 @@ namespace ZarzadzanieDomem
                 options.UseMySql(Configuration.GetConnectionString("DockerDB"), new MySqlServerVersion(new Version(8, 0, 21))));
 #else
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("Production"), new MySqlServerVersion(new Version(8, 0, 21))));
+                options.UseMySql(Configuration.GetConnectionString("Production"), new MariaDbServerVersion(new Version(10, 3, 27))));
 #endif
             services.AddControllers();
 
@@ -59,8 +59,6 @@ namespace ZarzadzanieDomem
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
 
             app.UseSwagger();
 

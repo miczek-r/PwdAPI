@@ -9,8 +9,8 @@ using ZarzadzanieDomem.Models.Context;
 namespace ZarzadzanieDomem.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210414201051_14.04.2021")]
-    partial class _14042021
+    [Migration("20210415165717_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
