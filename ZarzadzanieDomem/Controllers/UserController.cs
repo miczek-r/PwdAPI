@@ -32,33 +32,64 @@ namespace ZarzadzanieDomem.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public User Get(int id)
+        public ActionResult<User> Get(int id)
         {
-            return userRepository.GetUserById(id);
+            try
+            {
+                return Ok(userRepository.GetUserById(id));
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
 
         // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] User value)
+        public ActionResult Post([FromBody] User value)
         {
-            userRepository.AddUser(value);
-            userRepository.Save();
+            try
+            {
+                userRepository.AddUser(value);
+                userRepository.Save();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
 
         // PUT api/<UserController>
         [HttpPut]
-        public void Put([FromBody] User value)
+        public ActionResult Put([FromBody] User value)
         {
-            userRepository.Update(value);
-            userRepository.Save();
+            try
+            {
+                userRepository.Update(value);
+                userRepository.Save();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            userRepository.Delete(id);
-            userRepository.Save();
+            try
+            {
+                userRepository.Delete(id);
+                userRepository.Save();
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return NotFound();
+            }
         }
     }
 }

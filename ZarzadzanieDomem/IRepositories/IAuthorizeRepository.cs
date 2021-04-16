@@ -8,7 +8,7 @@ namespace ZarzadzanieDomem.IRepositories
 {
     interface IAuthorizeRepository
     {
-        User GetUserByEmail(string email, string password);
+        public User GetUserByEmail(string email, string password);
 
     }
 }
