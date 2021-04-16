@@ -13,7 +13,9 @@ namespace ZarzadzanieDomem.Models
         [Key]
         public int HomeId { get; set; }
         public string HomeName { get; set; }
-        public string Adress { get; set; }
-        public List<User> Users { get; set; }
+        public string Street { get; set; }
+        public string HouseNumber { get; set; }
+        public string PostCode { get; set; }
+        public string City { get; set; }
     }
 }

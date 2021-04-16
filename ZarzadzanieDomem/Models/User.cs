@@ -17,6 +17,8 @@ namespace ZarzadzanieDomem.Models
         public string email { get; set; }
         public string login { get; set; }
         public string password { get; set; }
+        public decimal saldo { get; set; }
+        public int HomeId { get; set; }
 
     }
 }

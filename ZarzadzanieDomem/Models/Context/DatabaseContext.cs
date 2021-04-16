@@ -14,11 +14,15 @@ namespace ZarzadzanieDomem.Models.Context
 
         public DbSet<User> Users { get; set; }
         public DbSet<Home> Homes { get; set; }
+        public DbSet<TypeOfExpense> TypesOfExpenses{get; set;}
+        public DbSet<Expense> Expenses {get; set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Home>().ToTable("Home");
+            modelBuilder.Entity<TypeOfExpense>().ToTable("TypeOfExpense");
+            modelBuilder.Entity<Expense>().ToTable("Expense");
         }
     }
 }
