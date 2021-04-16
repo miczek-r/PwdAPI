@@ -17,7 +17,6 @@ namespace ZarzadzanieDomem
 {
     public class Startup
     {
-        private const string CorsPolicyName = "MyPolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,7 +27,7 @@ namespace ZarzadzanieDomem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-#if DEBUG
+#if RELEASE
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("DockerDB"), new MySqlServerVersion(new Version(8, 0, 21))));
 #else
@@ -38,17 +37,8 @@ namespace ZarzadzanieDomem
             services.AddControllers();
 
             services.AddSwaggerGen();
-            services.AddCors(o => o.AddPolicy(CorsPolicyName, builder =>
 
-            {
-
-                builder.AllowAnyOrigin()
-
-                       .AllowAnyMethod()
-
-                       .AllowAnyHeader();
-
-            }));
+            services.AddCors();
 
         }
 
@@ -70,6 +60,15 @@ namespace ZarzadzanieDomem
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(x => x
+             .AllowAnyMethod()
+             .AllowAnyHeader()
+             .SetIsOriginAllowed(origin => true) // allow any origin
+             .AllowCredentials()); // allow credentials
+
+
+            app.UseHttpsRedirection();
 
             app.UseEndpoints(endpoints =>
             {

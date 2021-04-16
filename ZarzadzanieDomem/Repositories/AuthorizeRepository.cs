@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using ZarzadzanieDomem.Authentication;
 using ZarzadzanieDomem.IRepositories;
 using ZarzadzanieDomem.Models;
 using ZarzadzanieDomem.Models.Context;
@@ -18,10 +19,9 @@ namespace ZarzadzanieDomem.Repositories
         {
             _context = context;
         }
-        public User GetUserByEmail(string email,string password)
+        public User GetUserByEmail(Auth auth)
         {
-            return _context.Users.Where(user => user.email == email && user.password == password).FirstOrDefault();
-
+            return _context.Users.FirstOrDefault(u => u.email == auth.Email && u.password == auth.Password);
         }
     }
 }

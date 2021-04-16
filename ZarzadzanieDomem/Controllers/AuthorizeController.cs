@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ZarzadzanieDomem.Authentication;
 using ZarzadzanieDomem.IRepositories;
 using ZarzadzanieDomem.Models;
 using ZarzadzanieDomem.Models.Context;
@@ -22,14 +24,17 @@ namespace ZarzadzanieDomem.Controllers
         {
             authorizeRepository = new AuthorizeRepository(context);
         }
-
-        [HttpGet("{email} {password}")]
-        public User Login(string email, string password)
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Login([FromBody]Auth auth)
         {
-            User temp = authorizeRepository.GetUserByEmail(email, password);
-            if (temp != null) return temp; // TODO: dodac bledy
-            return temp;
-            
+            User user = authorizeRepository.GetUserByEmail(auth);
+            if (user !=null )
+            {
+                return Ok(user);
+            }
+            return NotFound();
         }
 
 
