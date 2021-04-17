@@ -11,7 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ZarzadzanieDomem.IRepositories;
 using ZarzadzanieDomem.Models.Context;
+using ZarzadzanieDomem.Repositories;
 
 namespace ZarzadzanieDomem
 {
@@ -27,13 +29,16 @@ namespace ZarzadzanieDomem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-#if RELEASE
+
+#if DEBUG
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("DockerDB"), new MySqlServerVersion(new Version(8, 0, 21))));
 #else
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("Production"), new MariaDbServerVersion(new Version(10, 3, 27))));
 #endif
+            services.AddScoped<IUserRepository, UserRepository>();
+
             services.AddControllers();
 
             services.AddSwaggerGen();

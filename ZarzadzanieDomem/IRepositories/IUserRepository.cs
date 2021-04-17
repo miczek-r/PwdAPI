@@ -6,15 +6,15 @@ using ZarzadzanieDomem.Models;
 
 namespace ZarzadzanieDomem.IRepositories
 {
-    interface IUserRepository
+    public interface IUserRepository
     {
         public IEnumerable<User> GetUsers();
+        User GetUser(int id);
+        User GetUserByEmail(string email);
         void Save();
         void AddUser(User value);
-        void Update(User value);
-        void Delete(int id);
-        User GetUserById(int id);
-
+        void Update(User user, User changedUser);
+        void Delete(User user);
 
     }
 }

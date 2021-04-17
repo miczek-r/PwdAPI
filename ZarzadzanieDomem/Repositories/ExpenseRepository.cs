@@ -51,7 +51,6 @@ namespace ZarzadzanieDomem.Repositories
                 expense.Amount = value.Amount;
                 expense.ExpenseId = value.ExpenseId;
                 expense.NameOfExpense = value.NameOfExpense;
-                expense.TypeOfExpenseID = value.TypeOfExpenseID;
                 _context.Expenses.Update(expense);
             }
             else

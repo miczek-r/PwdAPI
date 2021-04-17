@@ -21,7 +21,7 @@ namespace ZarzadzanieDomem.Repositories
         }
         public User GetUserByEmail(Auth auth)
         {
-            return _context.Users.FirstOrDefault(u => u.email == auth.Email && u.password == auth.Password);
+            return _context.Users.FirstOrDefault(u => u.Email == auth.Email && u.Password == auth.Password);
         }
     }
 }

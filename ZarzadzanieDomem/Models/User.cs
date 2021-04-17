@@ -14,11 +14,16 @@ namespace ZarzadzanieDomem.Models
         public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string email { get; set; }
-        public string login { get; set; }
-        public string password { get; set; }
-        public decimal saldo { get; set; }
-        public int HomeId { get; set; }
-
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime DateOfBirth { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+        public decimal Saldo { get; set; }
+        public ICollection<Expense> Expenses { get; set; }
     }
 }

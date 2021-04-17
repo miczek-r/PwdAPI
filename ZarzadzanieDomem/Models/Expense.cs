@@ -12,8 +12,11 @@ namespace ZarzadzanieDomem.Models
     {
         [Key]
         public int ExpenseId { get; set; }
+        [Required]
         public string NameOfExpense { get; set; }
+        [Required]
         public decimal Amount { get; set; }
-        public int TypeOfExpenseID { get; set; }
+        [Required]
+        public TypeOfExpense TypeOfExpense { get; set; }
     }
 }

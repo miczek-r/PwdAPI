@@ -24,6 +24,10 @@ namespace ZarzadzanieDomem.Repositories
             return _context.Users.ToList();
         }
 
+        public User GetUser(int id) => _context.Users.FirstOrDefault(u => u.UserId == id);
+
+        public User GetUserByEmail(string email) => _context.Users.FirstOrDefault(u => u.Email.Equals(email.Trim()));
+
         public void Save()
         {
             _context.SaveChanges();
@@ -32,52 +36,21 @@ namespace ZarzadzanieDomem.Repositories
         {
             _context.Users.Add(value);
         }
-        public void Update(User value)
+        public void Update(User user, User changedUser)
         {
-            User user = _context.Users.Where(user => user.UserId == value.UserId).FirstOrDefault();
-
-            if (user!=null)
-            {
-                user.HomeId = value.HomeId;
-                user.FirstName = value.FirstName;
-                user.LastName = value.LastName;
-                user.HomeId = value.HomeId;
-                user.email = value.email;
-                user.login = value.login;
-                user.password = value.password;
-                user.saldo = value.saldo;
-                user.UserId = value.UserId;
+                user.FirstName = changedUser.FirstName;
+                user.LastName = changedUser.LastName;
+                user.Email = changedUser.Email;
+                user.Password = changedUser.Password;
+                user.DateOfBirth = changedUser.DateOfBirth;
+                user.Saldo = changedUser.Saldo;
+                user.UserId = changedUser.UserId;
                 _context.Users.Update(user);
-            }
-            else
-            {
-                throw new Exception();
-            }
         }
-        public void Delete(int id)
-        {
-            User user = _context.Users.Find(id);
-            if (user != null)
-            {
+        public void Delete(User user)
+        {           
                 _context.Users.Remove(user);
-            }
-            else
-            {
-                throw new Exception();
-            }
         }
-        public User GetUserById(int id)
-        {
-            User user = _context.Users.Find(id);
-            if (user != null)
-            {
-                return _context.Users.Where(user => user.UserId == id).FirstOrDefault();
-            }
-            else
-            {
-                throw new Exception();
-            }
-
-        }
+       
     }
 }

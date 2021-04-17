@@ -16,80 +16,81 @@ namespace ZarzadzanieDomem.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private IUserRepository userRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(DatabaseContext context)
+        public UserController(IUserRepository userRepository)
         {
-            userRepository = new UserRepository(context);
+            _userRepository = userRepository;
         }
 
         // GET: api/<UserController>
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IActionResult Get()
         {
-            return userRepository.GetUsers();
+            IEnumerable<User> users = _userRepository.GetUsers();
+            return Ok(users);
         }
 
         // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public ActionResult<User> Get(int id)
+        [HttpGet("{id}", Name = "Get")]
+        public IActionResult Get(int id)
         {
-            try
+            User user = _userRepository.GetUser(id);
+            if (user == null)
             {
-                return Ok(userRepository.GetUserById(id));
+                return NotFound("User not found");
             }
-            catch (Exception ex)
-            {
-                return NotFound();
-            }
+            return Ok(user);
         }
 
         // POST api/<UserController>
         [HttpPost]
-        public ActionResult Post([FromBody] User value)
+        public IActionResult Post([FromBody] User user)
         {
-            try
+            if (user == null)
             {
-                userRepository.AddUser(value);
-                userRepository.Save();
-                return Ok();
+                return BadRequest("User is empty.");
             }
-            catch (Exception ex)
+            if (_userRepository.GetUserByEmail(user.Email) != null)
             {
-                return NotFound();
+                return BadRequest("User already exists");
             }
+            
+            _userRepository.AddUser(user);
+            _userRepository.Save();
+            return CreatedAtRoute("Get", new { Id = user.UserId }, user);
         }
 
         // PUT api/<UserController>
         [HttpPut]
-        public ActionResult Put([FromBody] User value)
+        public IActionResult Put(int id,[FromBody] User user)
         {
-            try
+           if(user == null)
             {
-                userRepository.Update(value);
-                userRepository.Save();
-                return Ok();
+                return BadRequest("User is empty");
             }
-            catch (Exception ex)
+            User userToUpdate = _userRepository.GetUser(id);
+            if (userToUpdate == null)
             {
-                return NotFound();
+                return NotFound("User not found");
             }
+            _userRepository.Update(userToUpdate, user);
+            _userRepository.Save();
+            return NoContent();
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            try
+            User user = _userRepository.GetUser(id);
+            if(user == null)
             {
-                userRepository.Delete(id);
-                userRepository.Save();
-                return Ok();
+                return NotFound("User not found");
             }
-            catch(Exception ex)
-            {
-                return NotFound();
-            }
+            _userRepository.Delete(user);
+            _userRepository.Save();
+            return NoContent();
         }
     }
 }

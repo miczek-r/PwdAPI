@@ -12,10 +12,13 @@ namespace ZarzadzanieDomem.Models
     {
         [Key]
         public int HomeId { get; set; }
+        [Required]
         public string HomeName { get; set; }
         public string Street { get; set; }
         public string HouseNumber { get; set; }
         public string PostCode { get; set; }
         public string City { get; set; }
+        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<Expense> Expenses { get; set; }
     }
 }
