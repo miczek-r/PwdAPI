@@ -17,6 +17,7 @@ namespace ZarzadzanieDomem.Models
         [Required]
         public decimal Amount { get; set; }
         [Required]
-        public TypeOfExpense TypeOfExpense { get; set; }
+        public int TypeOfExpenseId { get; set; }
+        public int OwnerId { get; set; }
     }
 }

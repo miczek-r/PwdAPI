@@ -19,12 +19,12 @@ namespace ZarzadzanieDomem.Repositories
             _context = context;
         }
 
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<User> GetAll()
         {
             return _context.Users.ToList();
         }
 
-        public User GetUser(int id) => _context.Users.FirstOrDefault(u => u.UserId == id);
+        public User GetById(int id) => _context.Users.FirstOrDefault(u => u.UserId == id);
 
         public User GetUserByEmail(string email) => _context.Users.FirstOrDefault(u => u.Email.Equals(email.Trim()));
 
@@ -32,7 +32,7 @@ namespace ZarzadzanieDomem.Repositories
         {
             _context.SaveChanges();
         }
-        public void AddUser(User value)
+        public void Create(User value)
         {
             _context.Users.Add(value);
         }
@@ -51,6 +51,6 @@ namespace ZarzadzanieDomem.Repositories
         {           
                 _context.Users.Remove(user);
         }
-       
+        
     }
 }

@@ -17,74 +17,106 @@ namespace ZarzadzanieDomem.Controllers
     [ApiController]
     public class ExpenseController : ControllerBase
     {
-        private IExpenseRepository expenseRepository;
-
-        public ExpenseController(DatabaseContext context)
+        public IExpenseRepository _expenseRepository;
+        public IUserRepository _userRepository;
+        public ExpenseController(IExpenseRepository expenseRepository, IUserRepository userRepository)
         {
-            expenseRepository = new ExpenseRepository(context);
+            _expenseRepository = expenseRepository;
+            _userRepository = userRepository;
         }
 
-        [HttpPost]
-        public void Post([FromBody] Expense value)
-        {
-            expenseRepository.AddExpense(value);
-            expenseRepository.Save();
-        }
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResult))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
-        [ProducesDefaultResponseType]
-        public ActionResult<Expense> GetExpenseById(int id)
-        {
-            try
-            {
-                return Ok(expenseRepository.FindExpense(id));
-            }catch(Exception ex)
-            {
-                return NotFound();
-            }
-            
-        }
+        
         [HttpGet]
-        public IEnumerable<Expense> GetAll()
+        public  IActionResult GetAll()
         {
-            return expenseRepository.GetExpenses();
+            IEnumerable<Expense> expenses = _expenseRepository.GetAll();
+            return Ok(expenses);
         }
-        [HttpPut]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResult))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
-        [ProducesDefaultResponseType]
-        public ActionResult Put([FromBody] Expense value)
+        [HttpGet("{id}", Name = "GetExpense")]
+        public IActionResult Get(int id)
         {
-            try
+            Expense expense = _expenseRepository.GetById(id);
+            if (expense == null)
             {
-                expenseRepository.Update(value);
-                expenseRepository.Save();
-                return Ok();
-            }catch(Exception ex)
-            {
-                return NotFound();
+                return NotFound("Expense not found");
             }
+            return Ok(expense);
+
+        }
+        [HttpPost]
+        public IActionResult Post([FromBody] Expense expense)
+        {
+            if (expense == null)
+            {
+                return BadRequest("Expense is empty");
+            }
+            _expenseRepository.Create(expense);
+            _expenseRepository.Save();
+            return CreatedAtRoute("GetExpense", new { Id = expense.ExpenseId }, expense);
+        }
+        
+        
+        [HttpPut]
+
+        public IActionResult Put(int id, [FromBody] Expense expense)
+        {
+            if (expense == null)
+            {
+                return BadRequest("Expense is empty");
+            }
+            Expense expenseToUpdate = _expenseRepository.GetById(id);
+            if (expenseToUpdate == null)
+            {
+                return NotFound("Expense not found");
+            }
+            _expenseRepository.Update(expenseToUpdate, expense);
+            _expenseRepository.Save();
+            return NoContent();
             
         }
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResult))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
-        [ProducesDefaultResponseType]
         public ActionResult Delete(int id)
         {
-            try
+           Expense expense = _expenseRepository.GetById(id);
+            if (expense == null)
             {
-                expenseRepository.Delete(id);
-                expenseRepository.Save();
-                return Ok();
-            }catch(Exception ex)
-            {
-                return NotFound();
+                return NotFound("Expense not found");
             }
+            _expenseRepository.Delete(expense);
+            _expenseRepository.Save();
+            return NoContent();
             
         }
-
-
+        [HttpGet("UserId/{UserId}", Name = "GetAllUserExpenses")]
+        public IActionResult GetExpensesById(int UserId)
+        {
+            User user = _userRepository.GetById(UserId);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+            if (_expenseRepository.GetByUserId(UserId) == null)
+            {
+                return NotFound("User has no expenses");
+            }
+            IEnumerable<Expense> expenses = _expenseRepository.GetByUserId(UserId);
+            return Ok(expenses);
+        }
+        [HttpGet("ByTypeAndUser/{TypeId}/{UserId}", Name = "GetAllUserExpensesByType")]
+        public IActionResult GetExpensesByType(int TypeId,int UserId)
+        {
+            User user = _userRepository.GetById(UserId);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+            if (_expenseRepository.GetByUserId(UserId) == null)
+            {
+                return NotFound("User has no expenses");
+            }
+            IEnumerable<Expense> expenses = _expenseRepository.GetByUserId(UserId);
+            IEnumerable<Expense> SortedByType = _expenseRepository.SortByType(expenses,TypeId);
+            return Ok(SortedByType);
+        }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ZarzadzanieDomem.Migrations
 {
-    public partial class FurtherConnections : Migration
+    public partial class _2104 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,10 +46,10 @@ namespace ZarzadzanieDomem.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     LastName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Email = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false),
                     Password = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
-                    Saldo = table.Column<decimal>(type: "decimal(65,30)", nullable: true),
+                    Saldo = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     HomeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -72,6 +72,7 @@ namespace ZarzadzanieDomem.Migrations
                     NameOfExpense = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     TypeOfExpenseId = table.Column<int>(type: "int", nullable: false),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
                     HomeId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -85,12 +86,6 @@ namespace ZarzadzanieDomem.Migrations
                         principalColumn: "HomeId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Expenses_TypesOfExpenses_TypeOfExpenseId",
-                        column: x => x.TypeOfExpenseId,
-                        principalTable: "TypesOfExpenses",
-                        principalColumn: "TypeOfExpenseId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Expenses_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
@@ -102,11 +97,6 @@ namespace ZarzadzanieDomem.Migrations
                 name: "IX_Expenses_HomeId",
                 table: "Expenses",
                 column: "HomeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Expenses_TypeOfExpenseId",
-                table: "Expenses",
-                column: "TypeOfExpenseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Expenses_UserId",

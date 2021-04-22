@@ -17,74 +17,92 @@ namespace ZarzadzanieDomem.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        private IHomeRepository homeRepository;
+        private readonly IHomeRepository _homeRepository;
+        private readonly IUserRepository _userRepository;
 
         public HomeController(DatabaseContext context)
         {
-            homeRepository = new HomeRepository(context);
-        }
-
-        [HttpPost]
-        public void Post([FromBody] Home value)
-        {
-            homeRepository.AddHome(value);
-            homeRepository.Save();
-        }
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResult))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
-        [ProducesDefaultResponseType]
-        public ActionResult<Home> GetHomeById(int id)
-        {
-            try
-            {
-                return Ok(homeRepository.GetHomeById(id));
-            }
-            catch (Exception ex)
-            {
-                return NotFound();
-            }
+            _homeRepository = new HomeRepository(context);
+            _userRepository = new UserRepository(context);
 
         }
         [HttpGet]
-        public IEnumerable<Home> GetAll()
+        public IActionResult Get()
         {
-            return homeRepository.GetHomes();
+            IEnumerable<Home> homes = _homeRepository.GetAll();
+            return Ok(homes);
         }
-        [HttpPut]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResult))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
-        [ProducesDefaultResponseType]
-        public ActionResult Put([FromBody] Home value)
+
+        [HttpGet("{id}", Name = "GetHome")]
+        public IActionResult Get(int id)
         {
-            try
+            Home home = _homeRepository.GetById(id);
+            if (home == null)
             {
-                homeRepository.Update(value);
-                homeRepository.Save();
-                return Ok();
+                return NotFound("Home not found");
             }
-            catch (Exception ex)
+            return Ok(home);
+
+        }
+
+
+        [HttpGet("UserId/{UserId}", Name = "GetHomeByUserID")]
+        public IActionResult GetHomeByID(int UserId)
+        {
+            User user = _userRepository.GetById(UserId);
+            if (user == null)
             {
-                return NotFound();
+                return NotFound("User not found");
             }
+            if (user.HomeId == null)
+            {
+                return NotFound("User has no home");
+            }
+            Home home = _homeRepository.GetByUser(user);
+            return Ok(home);
+
+        }
+        [HttpPost]
+        public IActionResult Post([FromBody] Home home)
+        {
+            if (home == null)
+            {
+                return BadRequest("Home is empty.");
+            }
+            _homeRepository.Create(home);
+            _homeRepository.Save();
+            return CreatedAtRoute("GetHome", new { Id = home.HomeId }, home);
+        }
+        
+        
+        [HttpPut]
+        public ActionResult Put(int id,[FromBody] Home home)
+        {
+            if (home == null)
+            {
+                return BadRequest("Home is empty");
+            }
+            Home homeToUpdate = _homeRepository.GetById(id);
+            if (homeToUpdate == null)
+            {
+                return NotFound("Home not found");
+            }
+            _homeRepository.Update(homeToUpdate,home);
+            _homeRepository.Save();
+            return NoContent();
 
         }
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResult))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
-        [ProducesDefaultResponseType]
         public ActionResult Delete(int id)
         {
-            try
+            Home home = _homeRepository.GetById(id);
+            if (home == null)
             {
-                homeRepository.Delete(id);
-                homeRepository.Save();
-                return Ok();
+                return NotFound("Home not Found");
             }
-            catch (Exception ex)
-            {
-                return NotFound();
-            }
+            _homeRepository.Delete(home);
+            _homeRepository.Save();
+            return NoContent();
 
         }
     }

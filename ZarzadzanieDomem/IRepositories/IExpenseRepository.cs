@@ -6,13 +6,15 @@ using ZarzadzanieDomem.Models;
 
 namespace ZarzadzanieDomem.IRepositories
 {
-    interface IExpenseRepository
+    public interface IExpenseRepository
     {
-        public void AddExpense(Expense expense);
-        public Expense FindExpense(int Id);
-        public IEnumerable<Expense> GetExpenses();
-        public void Update(Expense value);
-        public void Delete(int id);
+        public void Create(Expense expense);
+        public Expense GetById(int Id);
+        public IEnumerable<Expense> GetAll();
+        public void Update(Expense expense, Expense changedExpense);
+        public void Delete(Expense expense);
         public void Save();
+        public IEnumerable<Expense> GetByUserId(int id);
+        public IEnumerable<Expense> SortByType(IEnumerable<Expense> expenses, int typeOfExpenseId);
     }
 }

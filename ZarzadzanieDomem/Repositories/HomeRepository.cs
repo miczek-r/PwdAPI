@@ -19,7 +19,7 @@ namespace ZarzadzanieDomem.Repositories
             _context = context;
         }
 
-        public IEnumerable<Home> GetHomes()
+        public IEnumerable<Home> GetAll()
         {
             return _context.Homes.ToList();
         }
@@ -28,53 +28,28 @@ namespace ZarzadzanieDomem.Repositories
         {
             _context.SaveChanges();
         }
-        public void AddHome(Home value)
+        public void Create(Home value)
         {
             _context.Homes.Add(value);
         }
-        public void Update(Home value)
+        public void Update(Home home, Home changedHome)
         {
-            Home home = _context.Homes.Where(home => home.HomeId == value.HomeId).FirstOrDefault();
-            if (home != null)
-            {
-                home.City = value.City;
-                home.HomeId = value.HomeId;
-                home.PostCode = value.PostCode;
-                home.Street = value.Street;
-                home.HouseNumber = value.HouseNumber;
-                home.HomeName = value.HomeName;
+                home.City = changedHome.City;
+                home.HomeId = changedHome.HomeId;
+                home.PostCode = changedHome.PostCode;
+                home.Street = changedHome.Street;
+                home.HouseNumber = changedHome.HouseNumber;
+                home.HomeName = changedHome.HomeName;
                 _context.Homes.Update(home);
-            }
-            else
-            {
-                throw new Exception();
-            }
         }
-        public void Delete(int id)
+        public void Delete(Home home)
         {
-            Home home = _context.Homes.Find(id);
-            if (home != null)
-            {
-                _context.Homes.Remove(home);
-            }
-            else
-            {
-                throw new Exception();
-            }
-
+            _context.Homes.Remove(home);
         }
-        public Home GetHomeById(int id)
+        public Home GetById(int id) => _context.Homes.FirstOrDefault(h => h.HomeId == id);
+        public Home GetByUser(User user)
         {
-            Home home = _context.Homes.Find(id);
-            if (home != null)
-            {
-               return _context.Homes.Where(home => home.HomeId == id).FirstOrDefault();
-            }
-            else
-            {
-                throw new Exception();
-            }
-
+            return _context.Homes.Find(user.HomeId);
         }
     }
 }

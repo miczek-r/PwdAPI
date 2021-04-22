@@ -38,6 +38,9 @@ namespace ZarzadzanieDomem
                 options.UseMySql(Configuration.GetConnectionString("Production"), new MariaDbServerVersion(new Version(10, 3, 27))));
 #endif
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IExpenseRepository, ExpenseRepository>();
+            services.AddScoped<IHomeRepository, HomeRepository>();
+
 
             services.AddControllers();
 

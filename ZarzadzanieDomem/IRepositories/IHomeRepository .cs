@@ -6,14 +6,15 @@ using ZarzadzanieDomem.Models;
 
 namespace ZarzadzanieDomem.IRepositories
 {
-    interface IHomeRepository
+    public interface IHomeRepository
     {
-        public IEnumerable<Home> GetHomes();
+        public IEnumerable<Home> GetAll();
         void Save();
-        void AddHome(Home value);
-        void Update(Home value);
-        void Delete(int id);
-        Home GetHomeById(int id);
+        void Create(Home home);
+        void Update(Home home, Home changedHome);
+        void Delete(Home home);
+        Home GetById(int id);
+        public Home GetByUser(User user);
 
 
     }

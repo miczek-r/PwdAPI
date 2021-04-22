@@ -27,15 +27,15 @@ namespace ZarzadzanieDomem.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            IEnumerable<User> users = _userRepository.GetUsers();
+            IEnumerable<User> users = _userRepository.GetAll();
             return Ok(users);
         }
 
         // GET api/<UserController>/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetUser")]
         public IActionResult Get(int id)
         {
-            User user = _userRepository.GetUser(id);
+            User user = _userRepository.GetById(id);
             if (user == null)
             {
                 return NotFound("User not found");
@@ -56,9 +56,9 @@ namespace ZarzadzanieDomem.Controllers
                 return BadRequest("User already exists");
             }
             
-            _userRepository.AddUser(user);
+            _userRepository.Create(user);
             _userRepository.Save();
-            return CreatedAtRoute("Get", new { Id = user.UserId }, user);
+            return CreatedAtRoute("GetUser", new { Id = user.UserId }, user);
         }
 
         // PUT api/<UserController>
@@ -69,7 +69,7 @@ namespace ZarzadzanieDomem.Controllers
             {
                 return BadRequest("User is empty");
             }
-            User userToUpdate = _userRepository.GetUser(id);
+            User userToUpdate = _userRepository.GetById(id);
             if (userToUpdate == null)
             {
                 return NotFound("User not found");
@@ -83,7 +83,7 @@ namespace ZarzadzanieDomem.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            User user = _userRepository.GetUser(id);
+            User user = _userRepository.GetById(id);
             if(user == null)
             {
                 return NotFound("User not found");

@@ -18,24 +18,13 @@ namespace ZarzadzanieDomem.Repositories
         {
             _context = context;
         }
-        public void AddExpense(Expense expense)
+        public void Create(Expense expense)
         {
             _context.Expenses.Add(expense);
         }
-        public Expense FindExpense(int Id)
-        {
-
-            if (_context.Expenses.Find(Id) != null)
-            {
-                return _context.Expenses.Where(expense => expense.ExpenseId == Id).FirstOrDefault();
-            }
-            else
-            {
-                throw new Exception();
-            }
-            
-        }
-        public IEnumerable<Expense> GetExpenses()
+        public Expense GetById(int Id)=> _context.Expenses.FirstOrDefault(e => e.ExpenseId == Id);
+        
+        public IEnumerable<Expense> GetAll()
         {
             return _context.Expenses.ToList();
         }
@@ -43,33 +32,33 @@ namespace ZarzadzanieDomem.Repositories
         {
             _context.SaveChanges();
         }
-        public void Update(Expense value)
+        public void Update(Expense expense, Expense changedExpense)
         {
-            Expense expense = _context.Expenses.Where(expense => expense.ExpenseId == value.ExpenseId).FirstOrDefault();
-            if (expense != null)
-            {
-                expense.Amount = value.Amount;
-                expense.ExpenseId = value.ExpenseId;
-                expense.NameOfExpense = value.NameOfExpense;
+                expense.Amount = changedExpense.Amount;
+                expense.ExpenseId = changedExpense.ExpenseId;
+                expense.NameOfExpense = changedExpense.NameOfExpense;
                 _context.Expenses.Update(expense);
-            }
-            else
-            {
-                throw new Exception();
-            }
         }
-        public void Delete(int id)
+        public void Delete(Expense expense)
         {
-
-            if (_context.Expenses.Find(id)!=null)
-            {
-                _context.Expenses.Remove(_context.Expenses.Find(id));
-            }
-            else
-            {
-                throw new Exception();
-            }
+            _context.Expenses.Remove(expense);
         }
+        public IEnumerable<Expense> GetByUserId(int id) => _context.Expenses.Where(e => e.OwnerId == id).ToList();
+
+        public IEnumerable<Expense> SortByType(IEnumerable<Expense> expenses,int typeOfExpenseId)
+        {
+            List<Expense> list = new List<Expense>();
+            foreach (var element in expenses)
+            {
+                if (element.TypeOfExpenseId == typeOfExpenseId)
+                {
+                    list.Add(element);
+                }
+            }
+            IEnumerable<Expense> SortedByType = list;
+            return SortedByType;
+        }
+
     }
 }
 

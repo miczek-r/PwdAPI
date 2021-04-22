@@ -33,6 +33,9 @@ namespace ZarzadzanieDomem.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TypeOfExpenseId")
                         .HasColumnType("int");
 
@@ -42,8 +45,6 @@ namespace ZarzadzanieDomem.Migrations
                     b.HasKey("ExpenseId");
 
                     b.HasIndex("HomeId");
-
-                    b.HasIndex("TypeOfExpenseId");
 
                     b.HasIndex("UserId");
 
@@ -98,7 +99,7 @@ namespace ZarzadzanieDomem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DateOfBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
@@ -118,7 +119,7 @@ namespace ZarzadzanieDomem.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<decimal?>("Saldo")
+                    b.Property<decimal>("Saldo")
                         .HasColumnType("decimal(65,30)");
 
                     b.HasKey("UserId");
@@ -137,17 +138,9 @@ namespace ZarzadzanieDomem.Migrations
                         .WithMany("Expenses")
                         .HasForeignKey("HomeId");
 
-                    b.HasOne("ZarzadzanieDomem.Models.TypeOfExpense", "TypeOfExpense")
-                        .WithMany("Expenses")
-                        .HasForeignKey("TypeOfExpenseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ZarzadzanieDomem.Models.User", null)
                         .WithMany("Expenses")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("TypeOfExpense");
                 });
 
             modelBuilder.Entity("ZarzadzanieDomem.Models.User", b =>
@@ -162,11 +155,6 @@ namespace ZarzadzanieDomem.Migrations
                     b.Navigation("Expenses");
 
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("ZarzadzanieDomem.Models.TypeOfExpense", b =>
-                {
-                    b.Navigation("Expenses");
                 });
 
             modelBuilder.Entity("ZarzadzanieDomem.Models.User", b =>

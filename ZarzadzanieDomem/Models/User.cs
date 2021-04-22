@@ -25,5 +25,6 @@ namespace ZarzadzanieDomem.Models
         public string Password { get; set; }
         public decimal Saldo { get; set; }
         public ICollection<Expense> Expenses { get; set; }
+        public int? HomeId { get; set; }
     }
 }

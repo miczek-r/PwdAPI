@@ -14,7 +14,6 @@ namespace ZarzadzanieDomem.Models
         public int TypeOfExpenseId { get; set; }
         [Required]
         public string Name { get; set; }
-        public virtual ICollection<Expense> Expenses { get; set; }
 
     }
 }

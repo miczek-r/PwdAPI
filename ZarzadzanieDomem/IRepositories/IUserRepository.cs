@@ -8,13 +8,14 @@ namespace ZarzadzanieDomem.IRepositories
 {
     public interface IUserRepository
     {
-        public IEnumerable<User> GetUsers();
-        User GetUser(int id);
-        User GetUserByEmail(string email);
+        public IEnumerable<User> GetAll();
+        User GetById(int id);
+        User GetUserByEmail(string email); //TODO: perhaps deletable
         void Save();
-        void AddUser(User value);
+        void Create(User value);
         void Update(User user, User changedUser);
         void Delete(User user);
+        
 
     }
 }
