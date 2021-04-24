@@ -16,5 +16,7 @@ namespace ZarzadzanieDomem.IRepositories
         public void Save();
         public IEnumerable<Expense> GetByUserId(int id);
         public IEnumerable<Expense> SortByType(IEnumerable<Expense> expenses, int typeOfExpenseId);
+        public IEnumerable<TypeOfExpense> GetAllExpenseTypes();
+        public void CreateTypeOfExpense(TypeOfExpense typeOfExpense);
     }
 }

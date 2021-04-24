@@ -58,7 +58,14 @@ namespace ZarzadzanieDomem.Repositories
             IEnumerable<Expense> SortedByType = list;
             return SortedByType;
         }
-
+        public IEnumerable<TypeOfExpense> GetAllExpenseTypes()
+        {
+            return _context.TypesOfExpenses.ToList();
+        }
+        public void CreateTypeOfExpense(TypeOfExpense typeOfExpense)
+        {
+            _context.TypesOfExpenses.Add(typeOfExpense);
+        }
     }
 }
 

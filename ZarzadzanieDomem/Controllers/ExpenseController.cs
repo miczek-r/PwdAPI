@@ -32,6 +32,12 @@ namespace ZarzadzanieDomem.Controllers
             IEnumerable<Expense> expenses = _expenseRepository.GetAll();
             return Ok(expenses);
         }
+        [HttpGet("GetAllExpenseTypes")]
+        public IActionResult GetAllExpenseTypes()
+        {
+            IEnumerable<TypeOfExpense> typesOfExpenses = _expenseRepository.GetAllExpenseTypes();
+            return Ok(typesOfExpenses);
+        }
         [HttpGet("{id}", Name = "GetExpense")]
         public IActionResult Get(int id)
         {
@@ -44,7 +50,7 @@ namespace ZarzadzanieDomem.Controllers
 
         }
         [HttpPost]
-        public IActionResult Post([FromBody] Expense expense)
+        public IActionResult PostExpense([FromBody] Expense expense)
         {
             if (expense == null)
             {
@@ -54,8 +60,19 @@ namespace ZarzadzanieDomem.Controllers
             _expenseRepository.Save();
             return CreatedAtRoute("GetExpense", new { Id = expense.ExpenseId }, expense);
         }
-        
-        
+        [HttpPost("TypeOfExpense")]
+        public IActionResult PostTypeOfExpense([FromBody] TypeOfExpense typeOfExpense)
+        {
+            if (typeOfExpense == null)
+            {
+                return BadRequest("typeOfExpense is empty");
+            }
+            _expenseRepository.CreateTypeOfExpense(typeOfExpense);
+            _expenseRepository.Save();
+            return CreatedAtRoute("GetExpense", new { Id = typeOfExpense.TypeOfExpenseId}, typeOfExpense);
+        }
+
+
         [HttpPut]
 
         public IActionResult Put(int id, [FromBody] Expense expense)
