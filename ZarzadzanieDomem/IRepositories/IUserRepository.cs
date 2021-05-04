@@ -15,7 +15,8 @@ namespace ZarzadzanieDomem.IRepositories
         void Create(User value);
         void Update(User user, User changedUser);
         void Delete(User user);
-        
+        public void SendVerificationEmail(User user, string token);
+        public string TokenGenerator(User user);
 
     }
 }

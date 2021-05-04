@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZarzadzanieDomem.IRepositories;
@@ -51,6 +54,40 @@ namespace ZarzadzanieDomem.Repositories
         {           
                 _context.Users.Remove(user);
         }
-        
+        public void SendVerificationEmail(User user,string token)
+        {
+            NetworkCredential login = new NetworkCredential("piwo.inf.elektr.@gmail.com", "jasnepelne");
+            SmtpClient client = new SmtpClient("smtp.gmail.com");
+            client.Port = 587;
+            client.EnableSsl = true;
+            client.Credentials = login;
+            MailMessage msg = new MailMessage { From = new MailAddress("piwo.inf.elektr.@gmail.com", "no-reply@CashBuddy.com", Encoding.UTF8) };
+            msg.To.Add(new MailAddress(user.Email));
+            msg.Subject = "Rejestracja w serwisie PWD";
+            msg.Body = "Kliknij w link, aby potwierdzic swoj email: \n"+token;
+            msg.BodyEncoding = Encoding.UTF8;
+            msg.IsBodyHtml = true;
+            msg.Priority = MailPriority.High;
+            msg.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
+            string userstate = "Testowanie";
+            client.SendAsync(msg, userstate);
+        }
+       
+        public string TokenGenerator(User user)
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[20];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            string finalString =new String(stringChars);
+            return finalString;
+            
+        }
+
     }
 }

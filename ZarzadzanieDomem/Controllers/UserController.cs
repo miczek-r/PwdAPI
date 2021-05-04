@@ -54,10 +54,16 @@ namespace ZarzadzanieDomem.Controllers
             if (_userRepository.GetUserByEmail(user.Email) != null)
             {
                 return BadRequest("User already exists");
-            }
-            
+            }            
             _userRepository.Create(user);
             _userRepository.Save();
+            string token = user.UserId.ToString() + "_" + _userRepository.TokenGenerator(user);
+            user.ActivationToken = token;
+            User userToUpdate = _userRepository.GetById(user.UserId);
+            _userRepository.Update(userToUpdate, user);
+            _userRepository.Save();
+            token = "http://188.137.40.31/auth/"+ token;
+            _userRepository.SendVerificationEmail(user, token);
             return CreatedAtRoute("GetUser", new { Id = user.UserId }, user);
         }
 
