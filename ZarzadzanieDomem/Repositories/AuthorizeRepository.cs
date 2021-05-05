@@ -21,7 +21,11 @@ namespace ZarzadzanieDomem.Repositories
         }
         public User GetUserByEmail(Auth auth)
         {
-            return _context.Users.FirstOrDefault(u => u.Email == auth.Email && u.Password == auth.Password);
+       
+            byte[] encData_byte = new byte[auth.Password.Length];
+            encData_byte = System.Text.Encoding.UTF8.GetBytes(auth.Password);
+            string encodedData = Convert.ToBase64String(encData_byte);
+            return _context.Users.FirstOrDefault(u => u.Email == auth.Email && u.Password == encodedData);
         }
     }
 }

@@ -27,6 +27,7 @@ namespace ZarzadzanieDomem.Models
         public ICollection<Expense> Expenses { get; set; }
         public int? HomeId { get; set; }
         public string ActivationToken { get; set; }
+        public string PasswordRestorationToken { get; set; }
         public decimal ExpenseLimit { get; set; }
     }
 }
