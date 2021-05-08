@@ -9,8 +9,8 @@ using ZarzadzanieDomem.Models.Context;
 namespace ZarzadzanieDomem.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210504120704_4.05.2021_1")]
-    partial class _4052021_1
+    [Migration("20210508083619_SmallChanges")]
+    partial class SmallChanges
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -104,6 +104,9 @@ namespace ZarzadzanieDomem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("ActivationToken")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime(6)");
 
@@ -111,7 +114,7 @@ namespace ZarzadzanieDomem.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
-                    b.Property<decimal>("ExpenseLimit")
+                    b.Property<decimal?>("ExpenseLimit")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("FirstName")
@@ -127,11 +130,11 @@ namespace ZarzadzanieDomem.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<decimal>("Saldo")
-                        .HasColumnType("decimal(65,30)");
+                    b.Property<string>("PasswordRestorationToken")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<bool>("isConfirmed")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<decimal?>("Saldo")
+                        .HasColumnType("decimal(65,30)");
 
                     b.HasKey("UserId");
 

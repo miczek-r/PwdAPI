@@ -12,8 +12,8 @@ namespace ZarzadzanieDomem.Models
     {
         [Key]
         public int UserId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
@@ -23,11 +23,11 @@ namespace ZarzadzanieDomem.Models
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        public decimal Saldo { get; set; }
+        public decimal? Saldo { get; set; }
         public ICollection<Expense> Expenses { get; set; }
         public int? HomeId { get; set; }
-        public string ActivationToken { get; set; }
-        public string PasswordRestorationToken { get; set; }
-        public decimal ExpenseLimit { get; set; }
+        public string? ActivationToken { get; set; }
+        public string? PasswordRestorationToken { get; set; }
+        public decimal? ExpenseLimit { get; set; }
     }
 }

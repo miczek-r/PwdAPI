@@ -64,7 +64,7 @@ namespace ZarzadzanieDomem.Controllers
             User userToUpdate = _userRepository.GetById(user.UserId);
             _userRepository.Update(userToUpdate, user);
             _userRepository.Save();
-            token = "http://188.137.40.31/auth/"+ token;
+            token = "http://188.137.40.31/activate/"+ token;
             _userRepository.SendVerificationEmail(user, token);
             return CreatedAtRoute("GetUser", new { Id = user.UserId }, user);
         }
@@ -117,7 +117,7 @@ namespace ZarzadzanieDomem.Controllers
             User userToUpdate = _userRepository.GetById(user.UserId);
             _userRepository.Update(userToUpdate, user);
             _userRepository.Save();
-            token = "http://188.137.40.31/rest/" + token;
+            token = "http://188.137.40.31/restore/" + token;
             _userRepository.SendRestorationEmail(user, token);
             return NoContent();
         }

@@ -45,7 +45,7 @@ namespace ZarzadzanieDomem.Repositories
         }
         public IEnumerable<Expense> GetByUserId(int id) => _context.Expenses.Where(e => e.OwnerId == id).ToList();
 
-        public IEnumerable<Expense> SortByType(IEnumerable<Expense> expenses,int typeOfExpenseId)
+        public IEnumerable<Expense> FilterByType(IEnumerable<Expense> expenses,int typeOfExpenseId)
         {
             List<Expense> list = new List<Expense>();
             foreach (var element in expenses)
@@ -55,8 +55,8 @@ namespace ZarzadzanieDomem.Repositories
                     list.Add(element);
                 }
             }
-            IEnumerable<Expense> SortedByType = list;
-            return SortedByType;
+            IEnumerable<Expense> FilteredByType = list;
+            return FilteredByType;
         }
         public IEnumerable<TypeOfExpense> GetAllExpenseTypes()
         {

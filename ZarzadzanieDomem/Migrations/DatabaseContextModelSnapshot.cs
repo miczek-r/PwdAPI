@@ -112,7 +112,7 @@ namespace ZarzadzanieDomem.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
-                    b.Property<decimal>("ExpenseLimit")
+                    b.Property<decimal?>("ExpenseLimit")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("FirstName")
@@ -131,7 +131,7 @@ namespace ZarzadzanieDomem.Migrations
                     b.Property<string>("PasswordRestorationToken")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<decimal>("Saldo")
+                    b.Property<decimal?>("Saldo")
                         .HasColumnType("decimal(65,30)");
 
                     b.HasKey("UserId");

@@ -132,8 +132,8 @@ namespace ZarzadzanieDomem.Controllers
                 return NotFound("User has no expenses");
             }
             IEnumerable<Expense> expenses = _expenseRepository.GetByUserId(UserId);
-            IEnumerable<Expense> SortedByType = _expenseRepository.SortByType(expenses,TypeId);
-            return Ok(SortedByType);
+            IEnumerable<Expense> FilteredByType = _expenseRepository.FilterByType(expenses,TypeId);
+            return Ok(FilteredByType);
         }
     }
 }

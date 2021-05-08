@@ -9,8 +9,8 @@ using ZarzadzanieDomem.Models.Context;
 namespace ZarzadzanieDomem.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210421180030_21.04")]
-    partial class _2104
+    [Migration("20210508080947_Initial-Migration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,6 +27,9 @@ namespace ZarzadzanieDomem.Migrations
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime>("ExpenseDate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int?>("HomeId")
                         .HasColumnType("int");
@@ -101,12 +104,18 @@ namespace ZarzadzanieDomem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("ActivationToken")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<decimal>("ExpenseLimit")
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -119,6 +128,9 @@ namespace ZarzadzanieDomem.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("PasswordRestorationToken")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<decimal>("Saldo")

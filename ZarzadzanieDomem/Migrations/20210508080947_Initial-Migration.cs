@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ZarzadzanieDomem.Migrations
 {
-    public partial class _2104 : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,7 +50,10 @@ namespace ZarzadzanieDomem.Migrations
                     Email = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false),
                     Password = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
                     Saldo = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    HomeId = table.Column<int>(type: "int", nullable: true)
+                    HomeId = table.Column<int>(type: "int", nullable: true),
+                    ActivationToken = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    PasswordRestorationToken = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    ExpenseLimit = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,6 +74,7 @@ namespace ZarzadzanieDomem.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NameOfExpense = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    ExpenseDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     TypeOfExpenseId = table.Column<int>(type: "int", nullable: false),
                     OwnerId = table.Column<int>(type: "int", nullable: false),
                     HomeId = table.Column<int>(type: "int", nullable: true),

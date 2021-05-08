@@ -18,24 +18,25 @@ namespace ZarzadzanieDomem.Controllers
     [ApiController]
     public class AuthorizeController : ControllerBase
     {
-        private IAuthorizeRepository authorizeRepository;
+        private IAuthorizeRepository _authorizeRepository;
 
         public AuthorizeController(DatabaseContext context)
         {
-            authorizeRepository = new AuthorizeRepository(context);
+            _authorizeRepository = new AuthorizeRepository(context);
         }
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Login([FromBody]Auth auth)
         {
-            User user = authorizeRepository.GetUserByEmail(auth);
+            User user = _authorizeRepository.GetUserByEmail(auth);
             if (user !=null )
             {
                 return Ok(user);
             }
             return NotFound();
         }
+
 
 
     }
