@@ -11,6 +11,5 @@ namespace ZarzadzanieDomem.IRepositories
     interface IAuthorizeRepository
     {
         User GetUserByEmail(Auth auth);
-
     }
 }

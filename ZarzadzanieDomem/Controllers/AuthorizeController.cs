@@ -30,11 +30,15 @@ namespace ZarzadzanieDomem.Controllers
         public IActionResult Login([FromBody]Auth auth)
         {
             User user = _authorizeRepository.GetUserByEmail(auth);
-            if (user !=null )
+            if (user == null )
             {
-                return Ok(user);
+                return NotFound("User not found");
             }
-            return NotFound();
+            if (user.ActivationToken != null)
+            {
+                return BadRequest("User is not activated");
+            }
+            return Ok(user);
         }
 
 
