@@ -70,7 +70,7 @@ namespace ZarzadzanieDomem.Controllers
         }
 
         // PUT api/<UserController>
-        [HttpPut]
+        [HttpPut("{id}")]
         public IActionResult Put(int id,[FromBody] User user)
         {
            if(user == null)
@@ -100,8 +100,8 @@ namespace ZarzadzanieDomem.Controllers
             _userRepository.Save();
             return NoContent();
         }
-        [HttpPut("RestorePassword/{email}")]
-        public IActionResult Put(string email)
+        [HttpPut("GetPasswordRestorationToken/{email}")]
+        public IActionResult GetPasswordRestorationToken(string email)
         {
             if (email == null)
             {

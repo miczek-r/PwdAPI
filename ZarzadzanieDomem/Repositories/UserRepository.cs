@@ -41,20 +41,18 @@ namespace ZarzadzanieDomem.Repositories
         }
         public void Update(User user, User changedUser)
         {
-                user.FirstName = changedUser.FirstName;
-                user.LastName = changedUser.LastName;
-                user.Email = changedUser.Email;
-                user.Password = changedUser.Password;
-                user.DateOfBirth = changedUser.DateOfBirth;
-                user.Saldo = changedUser.Saldo;
-                user.UserId = changedUser.UserId;
-                _context.Users.Update(user);
+            user.FirstName = changedUser.FirstName;
+            user.LastName = changedUser.LastName;
+            user.DateOfBirth = changedUser.DateOfBirth;
+            user.Saldo = changedUser.Saldo;
+            user.ExpenseLimit = changedUser.ExpenseLimit;
+            _context.Users.Update(user);
         }
         public void Delete(User user)
-        {           
-                _context.Users.Remove(user);
+        {
+            _context.Users.Remove(user);
         }
-        public void SendVerificationEmail(User user,string token)
+        public void SendVerificationEmail(User user, string token)
         {
             NetworkCredential login = new NetworkCredential("piwo.inf.elektr.@gmail.com", "jasnepelne");
             SmtpClient client = new SmtpClient("smtp.gmail.com");
@@ -64,7 +62,7 @@ namespace ZarzadzanieDomem.Repositories
             MailMessage msg = new MailMessage { From = new MailAddress("piwo.inf.elektr.@gmail.com", "no-reply@CashBuddy.com", Encoding.UTF8) };
             msg.To.Add(new MailAddress(user.Email));
             msg.Subject = "Rejestracja w serwisie PWD";
-            msg.Body = "Kliknij w link, aby potwierdzic swoj email: \n"+token;
+            msg.Body = "Kliknij w link, aby potwierdzic swoj email: \n" + token;
             msg.BodyEncoding = Encoding.UTF8;
             msg.IsBodyHtml = true;
             msg.Priority = MailPriority.High;
@@ -102,9 +100,9 @@ namespace ZarzadzanieDomem.Repositories
                 stringChars[i] = chars[random.Next(chars.Length)];
             }
 
-            string finalString =new String(stringChars);
+            string finalString = new String(stringChars);
             return finalString;
-            
+
         }
         public string EncodePasswordToBase64(string password)
         {
