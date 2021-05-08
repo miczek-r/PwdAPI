@@ -140,19 +140,20 @@ namespace ZarzadzanieDomem.Controllers
             _userRepository.Save();
             return NoContent();
         }
-        [HttpPut("RestorePassword/{token}")]
-        public IActionResult RestorePassword(string token)
+        [HttpPut("RestorePassword/{token}/{password}")]
+        public IActionResult RestorePassword(string token, string password)
         {
             if (token == null)
             {
-                return BadRequest("Email is empty.");
+                return BadRequest("token is empty.");
             }
             User user = _userRepository.GetUserByRestorationToken(token);
             if (user == null)
             {
-                return BadRequest("There is no user with that email");
+                return BadRequest("There is no user with that token");
             }
             user.PasswordRestorationToken = null;
+            user.Password = _userRepository.EncodePasswordToBase64(password);
             User userToUpdate = _userRepository.GetById(user.UserId);
             _userRepository.Update(userToUpdate, user);
             _userRepository.Save();
