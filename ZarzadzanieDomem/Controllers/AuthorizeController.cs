@@ -19,10 +19,12 @@ namespace ZarzadzanieDomem.Controllers
     public class AuthorizeController : ControllerBase
     {
         private IAuthorizeRepository _authorizeRepository;
+        private IUserRepository _userRepository;
 
-        public AuthorizeController(DatabaseContext context)
+        public AuthorizeController(IUserRepository userRepository, IAuthorizeRepository authorizeRepository)
         {
-            _authorizeRepository = new AuthorizeRepository(context);
+            _userRepository = userRepository;
+            _authorizeRepository = authorizeRepository;
         }
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
@@ -40,8 +42,65 @@ namespace ZarzadzanieDomem.Controllers
             }
             return Ok(user);
         }
+        [HttpPut("RestorePassword/{token}/{password}")]
+        public IActionResult RestorePassword(string token, string password)
+        {
+            if (token == null)
+            {
+                return BadRequest("token is empty.");
+            }
+            User user = _authorizeRepository.GetUserByRestorationToken(token);
+            if (user == null)
+            {
+                return BadRequest("There is no user with that token");
+            }
+            user.PasswordRestorationToken = null;
+            user.Password = _authorizeRepository.EncodePassword(password);
+            User userToUpdate = _userRepository.GetById(user.UserId);
+            _userRepository.Update(userToUpdate, user);
+            _userRepository.Save();
+            return NoContent();
+        }
+        [HttpPut("GetPasswordRestorationToken/{email}")]
+        public IActionResult GetPasswordRestorationToken(string email)
+        {
+            if (email == null)
+            {
+                return BadRequest("Email is empty.");
+            }
+            User user = _userRepository.GetUserByEmail(email);
+            if (user == null)
+            {
+                return BadRequest("There is no user with that email");
+            }
+            string token = user.UserId.ToString() + _authorizeRepository.TokenGenerator(user);
+            user.PasswordRestorationToken = token;
+            User userToUpdate = _userRepository.GetById(user.UserId);
+            _userRepository.Update(userToUpdate, user);
+            _userRepository.Save();
+            token = "http://188.137.40.31/restore/" + token;
+            _authorizeRepository.SendRestorationEmail(user, token);
+            return NoContent();
+        }
 
-
+        [HttpPut("ConfirmEmail/{token}")]
+        public IActionResult ConfirmEmail(string token)
+        {
+            if (token == null)
+            {
+                return BadRequest("Email is empty.");
+            }
+            User user = _authorizeRepository.GetUserByActivationToken(token);
+            if (user == null)
+            {
+                return BadRequest("There is no user with that email");
+            }
+            user.ActivationToken = null;
+            User userToUpdate = _userRepository.GetById(user.UserId);
+            _userRepository.Update(userToUpdate, user);
+            _userRepository.Save();
+            return NoContent();
+        }
 
     }
 }

@@ -1,16 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ZarzadzanieDomem.IRepositories;
 using ZarzadzanieDomem.Models.Context;
 using ZarzadzanieDomem.Repositories;
@@ -31,16 +25,18 @@ namespace ZarzadzanieDomem
         {
 
 #if DEBUG
+            byte[] encoded = Convert.FromBase64String(Configuration.GetConnectionString("DockerDB"));
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DockerDB"), new MySqlServerVersion(new Version(8, 0, 21))));
-#else
+                options.UseMySql(System.Text.Encoding.UTF8.GetString(encoded), new MySqlServerVersion(new Version(8, 0, 21))));
+#else       
+            var encoded = Convert.FromBase64String(Configuration.GetConnectionString("Production"));
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("Production"), new MariaDbServerVersion(new Version(10, 3, 27))));
+                options.UseMySql(System.Text.Encoding.UTF8.GetString(encoded)), new MariaDbServerVersion(new Version(10, 3, 27))));
 #endif
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IExpenseRepository, ExpenseRepository>();
             services.AddScoped<IHomeRepository, HomeRepository>();
-
+            services.AddScoped<IAuthorizeRepository, AuthorizeRepository>();
 
             services.AddControllers();
 

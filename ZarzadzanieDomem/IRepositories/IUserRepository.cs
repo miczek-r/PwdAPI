@@ -15,13 +15,7 @@ namespace ZarzadzanieDomem.IRepositories
         void Create(User value);
         void Update(User user, User changedUser);
         void Delete(User user);
-        public void SendVerificationEmail(User user, string token);
-        public string TokenGenerator(User user);
-        public void SendRestorationEmail(User user, string token);
-        public string EncodePasswordToBase64(string password);
-        public string DecodeFrom64(string encodedData);
-        public User GetUserByRestorationToken(string token);
-        public User GetUserByActivationToken(string token);
+        
 
     }
 }
