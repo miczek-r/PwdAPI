@@ -45,6 +45,8 @@ namespace ZarzadzanieDomem.Repositories
         }
         public IEnumerable<Expense> GetByUserId(int id) => _context.Expenses.Where(e => e.OwnerId == id).ToList();
 
+        
+
         public IEnumerable<Expense> FilterByType(IEnumerable<Expense> expenses,int typeOfExpenseId)
         {
             List<Expense> list = new List<Expense>();

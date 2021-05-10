@@ -31,6 +31,8 @@ namespace ZarzadzanieDomem.Repositories
 
         public User GetUserByEmail(string email) => _context.Users.FirstOrDefault(u => u.Email.Equals(email.Trim()));
 
+        public IEnumerable<User> GetByHomeId(int HomeId) => _context.Users.Where(u => u.HomeId == HomeId);
+
         public void Save()
         {
             _context.SaveChanges();
@@ -46,6 +48,7 @@ namespace ZarzadzanieDomem.Repositories
             user.DateOfBirth = changedUser.DateOfBirth;
             user.Saldo = changedUser.Saldo;
             user.ExpenseLimit = changedUser.ExpenseLimit;
+            user.HomeId = changedUser.HomeId;
             _context.Users.Update(user);
         }
         public void Delete(User user)

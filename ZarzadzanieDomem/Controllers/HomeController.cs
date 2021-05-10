@@ -62,6 +62,23 @@ namespace ZarzadzanieDomem.Controllers
             return Ok(home);
 
         }
+
+        [HttpGet("AllHomeUsers/{HomeId}")]
+        public IActionResult GetUsersByHomeId(int HomeId)
+        {
+            if (_homeRepository.GetById(HomeId) == null)
+            {
+                return NotFound("This home does not exists");
+            }
+            IEnumerable<User> users = _userRepository.GetByHomeId(HomeId);
+            if (users.Count()==0)
+            {
+                return NotFound("Home has no users");
+            }
+            return Ok(users);
+
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] Home home)
         {

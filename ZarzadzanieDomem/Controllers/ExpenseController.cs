@@ -19,10 +19,12 @@ namespace ZarzadzanieDomem.Controllers
     {
         public IExpenseRepository _expenseRepository;
         public IUserRepository _userRepository;
-        public ExpenseController(IExpenseRepository expenseRepository, IUserRepository userRepository)
+        public IHomeRepository _homeRepository;
+        public ExpenseController(IExpenseRepository expenseRepository, IUserRepository userRepository, IHomeRepository homeRepository)
         {
             _expenseRepository = expenseRepository;
             _userRepository = userRepository;
+            _homeRepository = homeRepository;
         }
 
         
@@ -119,6 +121,32 @@ namespace ZarzadzanieDomem.Controllers
             IEnumerable<Expense> expenses = _expenseRepository.GetByUserId(UserId);
             return Ok(expenses);
         }
+
+        [HttpGet("HomeId/{HomeId}", Name = "GetHomeExpenses")]
+        public IActionResult GetHomeExpenses(int HomeId)
+        {
+            if (_homeRepository.GetById(HomeId) == null)
+            {
+                return NotFound("User not found");
+            }
+            IEnumerable<Expense> expenses = new List<Expense>();
+            IEnumerable<User> users = _userRepository.GetByHomeId(HomeId).ToList();
+            
+                foreach (User user in users)
+            {
+                IEnumerable<Expense> temp = _expenseRepository.GetByUserId(user.UserId).ToList();
+                expenses = expenses.Concat(temp);
+            }
+                
+            
+           
+            if (expenses == null)
+            {
+                return NotFound("Home has no expenses");
+            }
+            return Ok(expenses);
+        }
+
         [HttpGet("ByTypeAndUser/{TypeId}/{UserId}", Name = "GetAllUserExpensesByType")]
         public IActionResult GetExpensesByType(int TypeId,int UserId)
         {
