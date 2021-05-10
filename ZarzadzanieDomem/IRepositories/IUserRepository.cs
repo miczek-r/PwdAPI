@@ -10,7 +10,8 @@ namespace ZarzadzanieDomem.IRepositories
     {
         public IEnumerable<User> GetAll();
         User GetById(int id);
-        User GetUserByEmail(string email); //TODO: perhaps deletable
+        User GetUserByEmail(string email);
+        IEnumerable<User> GetByHomeId(int HomeId);
         void Save();
         void Create(User value);
         void Update(User user, User changedUser);
