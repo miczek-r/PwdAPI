@@ -45,12 +45,12 @@ namespace ZarzadzanieDomem.Repositories
         }
         public void SendVerificationEmail(User user, string token)
         {
-            NetworkCredential login = new NetworkCredential("piwo.inf.elektr.@gmail.com", "jasnepelne");
+            NetworkCredential login = new NetworkCredential("testowymiczek.@gmail.com", "!Admin123");
             SmtpClient client = new SmtpClient("smtp.gmail.com");
             client.Port = 587;
             client.EnableSsl = true;
             client.Credentials = login;
-            MailMessage msg = new MailMessage { From = new MailAddress("piwo.inf.elektr.@gmail.com", "no-reply@CashBuddy.com", Encoding.UTF8) };
+            MailMessage msg = new MailMessage { From = new MailAddress("testowymiczek.@gmail.com", "no-reply@CashBuddy.com", Encoding.UTF8) };
             msg.To.Add(new MailAddress(user.Email));
             msg.Subject = "Rejestracja w serwisie PWD";
             msg.Body = "Kliknij w link, aby potwierdzic swoj email: \n" + token;
@@ -63,12 +63,12 @@ namespace ZarzadzanieDomem.Repositories
         }
         public void SendRestorationEmail(User user, string token)
         {
-            NetworkCredential login = new NetworkCredential("piwo.inf.elektr.@gmail.com", "jasnepelne");
+            NetworkCredential login = new NetworkCredential("testowymiczek.@gmail.com", "!Admin123");
             SmtpClient client = new SmtpClient("smtp.gmail.com");
             client.Port = 587;
             client.EnableSsl = true;
             client.Credentials = login;
-            MailMessage msg = new MailMessage { From = new MailAddress("piwo.inf.elektr.@gmail.com", "no-reply@CashBuddy.com", Encoding.UTF8) };
+            MailMessage msg = new MailMessage { From = new MailAddress("testowymiczek.@gmail.com", "no-reply@CashBuddy.com", Encoding.UTF8) };
             msg.To.Add(new MailAddress(user.Email));
             msg.Subject = "CashBuddy: Zmiana hasla";
             msg.Body = "W serwisie cashbuddy zostala zgloszona proba zmiany hasla na twoim koncie. Jesli to ty, to kliknij w link: \n" + token;

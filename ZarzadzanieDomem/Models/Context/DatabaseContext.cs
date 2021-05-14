@@ -16,6 +16,7 @@ namespace ZarzadzanieDomem.Models.Context
         public DbSet<Home> Homes { get; set; }
         public DbSet<TypeOfExpense> TypesOfExpenses{get; set;}
         public DbSet<Expense> Expenses {get; set;}
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

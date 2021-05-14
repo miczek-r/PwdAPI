@@ -105,7 +105,7 @@ namespace ZarzadzanieDomem.Migrations
                     b.Property<string>("ActivationToken")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
@@ -131,7 +131,7 @@ namespace ZarzadzanieDomem.Migrations
                     b.Property<string>("PasswordRestorationToken")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<decimal?>("Saldo")
+                    b.Property<decimal>("Saldo")
                         .HasColumnType("decimal(65,30)");
 
                     b.HasKey("UserId");

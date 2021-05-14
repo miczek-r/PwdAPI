@@ -24,14 +24,14 @@ namespace ZarzadzanieDomem
         public void ConfigureServices(IServiceCollection services)
         {
 
-#if DEBUG
+#if RELEASE
             byte[] encoded = Convert.FromBase64String(Configuration.GetConnectionString("DockerDB"));
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseMySql(System.Text.Encoding.UTF8.GetString(encoded), new MySqlServerVersion(new Version(8, 0, 21))));
 #else       
-            var encoded = Convert.FromBase64String(Configuration.GetConnectionString("Production"));
+            byte[] encoded = Convert.FromBase64String(Configuration.GetConnectionString("Production"));
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseMySql(System.Text.Encoding.UTF8.GetString(encoded)), new MariaDbServerVersion(new Version(10, 3, 27))));
+                options.UseMySql(System.Text.Encoding.UTF8.GetString(encoded), new MariaDbServerVersion(new Version(10, 3, 27))));
 #endif
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IExpenseRepository, ExpenseRepository>();

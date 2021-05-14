@@ -18,11 +18,13 @@ namespace ZarzadzanieDomem.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IAuthorizeRepository _authorizeRepository;
+        private readonly IHomeRepository _homeRepository;
 
-        public UserController(IUserRepository userRepository, IAuthorizeRepository authorizeRepository)
+        public UserController(IUserRepository userRepository, IAuthorizeRepository authorizeRepository, IHomeRepository homeRepository)
         {
             _userRepository = userRepository;
             _authorizeRepository = authorizeRepository;
+            _homeRepository = homeRepository;
         }
 
         // GET: api/<UserController>
@@ -66,16 +68,16 @@ namespace ZarzadzanieDomem.Controllers
             User userToUpdate = _userRepository.GetById(user.UserId);
             _userRepository.Update(userToUpdate, user);
             _userRepository.Save();
-            token = "http://188.137.40.31/activate/"+ token;
+            token = "http://188.137.40.31/activate/" + token;
             _authorizeRepository.SendVerificationEmail(user, token);
             return CreatedAtRoute("GetUser", new { Id = user.UserId }, user);
         }
 
         // PUT api/<UserController>
         [HttpPut("{id}")]
-        public IActionResult Put(int id,[FromBody] User user)
+        public IActionResult Put(int id, [FromBody] User user)
         {
-           if(user == null)
+            if (user == null)
             {
                 return BadRequest("User is empty");
             }
@@ -89,12 +91,50 @@ namespace ZarzadzanieDomem.Controllers
             return NoContent();
         }
 
+
+        // PUT api/<UserController>
+        [HttpPut("JoinHome/{UserId}/{HomeId}")]
+        public IActionResult JoinHome(int UserId, int HomeId)
+        {
+            User user = _userRepository.GetById(UserId);
+            if (user == null)
+            {
+                return BadRequest("User does not exists");
+            }
+            if (_homeRepository.GetById(HomeId) == null)
+            {
+                return BadRequest("Home does not exists");
+            }
+
+            User userToUpdate = user;
+            userToUpdate.HomeId = HomeId;
+            _userRepository.Update(userToUpdate, user);
+            _userRepository.Save();
+            return NoContent();
+        }
+
+        // PUT api/<UserController>
+        [HttpPut("LeaveHome/{UserId}")]
+        public IActionResult LeaveHome(int UserId)
+        {
+            User user = _userRepository.GetById(UserId);
+            if (user == null)
+            {
+                return BadRequest("User does not exists");
+            }
+            User userToUpdate = user;
+            userToUpdate.HomeId = null;
+            _userRepository.Update(userToUpdate, user);
+            _userRepository.Save();
+            return NoContent();
+        }
+
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
             User user = _userRepository.GetById(id);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound("User not found");
             }
@@ -102,7 +142,7 @@ namespace ZarzadzanieDomem.Controllers
             _userRepository.Save();
             return NoContent();
         }
-        
-        
+
+
     }
 }
