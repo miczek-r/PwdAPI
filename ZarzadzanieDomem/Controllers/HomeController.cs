@@ -93,13 +93,13 @@ namespace ZarzadzanieDomem.Controllers
         
         
         [HttpPut]
-        public ActionResult Put(int id,[FromBody] Home home)
+        public ActionResult Put([FromBody] Home home)
         {
             if (home == null)
             {
                 return BadRequest("Home is empty");
             }
-            Home homeToUpdate = _homeRepository.GetById(id);
+            Home homeToUpdate = _homeRepository.GetById(home.HomeId);
             if (homeToUpdate == null)
             {
                 return NotFound("Home not found");

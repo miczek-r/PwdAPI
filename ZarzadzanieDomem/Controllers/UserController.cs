@@ -75,13 +75,13 @@ namespace ZarzadzanieDomem.Controllers
 
         // PUT api/<UserController>
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] User user)
+        public IActionResult Put([FromBody] User user)
         {
             if (user == null)
             {
                 return BadRequest("User is empty");
             }
-            User userToUpdate = _userRepository.GetById(id);
+            User userToUpdate = _userRepository.GetById(user.UserId);
             if (userToUpdate == null)
             {
                 return NotFound("User not found");
