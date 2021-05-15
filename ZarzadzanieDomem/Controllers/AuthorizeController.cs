@@ -20,11 +20,13 @@ namespace ZarzadzanieDomem.Controllers
     {
         private IAuthorizeRepository _authorizeRepository;
         private IUserRepository _userRepository;
+        private IExpenseRepository _expenseRepository;
 
-        public AuthorizeController(IUserRepository userRepository, IAuthorizeRepository authorizeRepository)
+        public AuthorizeController(IUserRepository userRepository, IAuthorizeRepository authorizeRepository, IExpenseRepository expenseRepository)
         {
             _userRepository = userRepository;
             _authorizeRepository = authorizeRepository;
+            _expenseRepository = expenseRepository;
         }
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
@@ -40,6 +42,36 @@ namespace ZarzadzanieDomem.Controllers
             {
                 return BadRequest("User is not activated");
             }
+            IEnumerable<Expense> expenses = _expenseRepository.GetByUserId(user.UserId);
+            
+            decimal tempSaldo = 0;
+            foreach (Expense el in expenses)
+            {
+                int temp = DateTime.Compare(el.ExpenseDate, DateTime.Now);
+                if (temp <= 0)
+                {
+                    el.Accounted = true;
+                }
+                else if (temp > 0)
+                {
+                    el.Accounted = false;
+                }
+            }
+            foreach (Expense el in expenses)
+            {
+                if (el.Accounted && el.TypeOfExpenseId==2)
+                {
+                    tempSaldo += el.Amount;
+                }
+                else if(el.Accounted && el.TypeOfExpenseId!=2)
+                {
+                    tempSaldo -= el.Amount;
+                }
+            }
+            user.Saldo = tempSaldo;
+            User userToUpdate = _authorizeRepository.GetUserByEmail(auth);
+            _userRepository.Update(userToUpdate,user);
+            _expenseRepository.Save();
             return Ok(user);
         }
         [HttpPut("RestorePassword/{token}/{password}")]

@@ -31,7 +31,7 @@ namespace ZarzadzanieDomem.Controllers
             IEnumerable<Notification> notifications = _notificationRepository.GetAll();
             return Ok(notifications);
         }
-        [HttpGet("UserEmai/{email}")]
+        [HttpGet("UserEmail/{email}")]
         public IActionResult GetByUserEmail(string email)
         {
             IEnumerable < Notification > notifications = _notificationRepository.GetByUserEmail(email);
@@ -48,6 +48,10 @@ namespace ZarzadzanieDomem.Controllers
             if (notification == null)
             {
                 return BadRequest("Notification is empty.");
+            }
+            else if(notification.Sender == notification.ReceiverEmail)
+            {
+                return BadRequest("You can't send a notification to yourself");
             }
             _notificationRepository.Create(notification);
             _notificationRepository.Save();
