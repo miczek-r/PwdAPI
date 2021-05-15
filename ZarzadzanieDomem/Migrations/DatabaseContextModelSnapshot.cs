@@ -19,9 +19,9 @@ namespace ZarzadzanieDomem.Migrations
 
             modelBuilder.Entity("ZarzadzanieDomem.Models.Expense", b =>
                 {
-                    b.Property<int>("ExpenseId")
+                    b.Property<uint>("ExpenseId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int unsigned");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(65,30)");
@@ -29,36 +29,26 @@ namespace ZarzadzanieDomem.Migrations
                     b.Property<DateTime>("ExpenseDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("HomeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("NameOfExpense")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("int");
+                    b.Property<uint>("OwnerId")
+                        .HasColumnType("int unsigned");
 
-                    b.Property<int>("TypeOfExpenseId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<uint>("TypeOfExpenseId")
+                        .HasColumnType("int unsigned");
 
                     b.HasKey("ExpenseId");
-
-                    b.HasIndex("HomeId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Expenses");
                 });
 
             modelBuilder.Entity("ZarzadzanieDomem.Models.Home", b =>
                 {
-                    b.Property<int>("HomeId")
+                    b.Property<uint>("HomeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int unsigned");
 
                     b.Property<string>("City")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -81,11 +71,42 @@ namespace ZarzadzanieDomem.Migrations
                     b.ToTable("Homes");
                 });
 
+            modelBuilder.Entity("ZarzadzanieDomem.Models.Notification", b =>
+                {
+                    b.Property<uint>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int unsigned");
+
+                    b.Property<uint?>("HomeId")
+                        .HasColumnType("int unsigned");
+
+                    b.Property<DateTime>("NotificationDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("ReceiverEmail")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Sender")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("NotificationId");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("ZarzadzanieDomem.Models.TypeOfExpense", b =>
                 {
-                    b.Property<int>("TypeOfExpenseId")
+                    b.Property<uint>("TypeOfExpenseId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int unsigned");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -98,9 +119,9 @@ namespace ZarzadzanieDomem.Migrations
 
             modelBuilder.Entity("ZarzadzanieDomem.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<uint>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int unsigned");
 
                     b.Property<string>("ActivationToken")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -118,8 +139,8 @@ namespace ZarzadzanieDomem.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int?>("HomeId")
-                        .HasColumnType("int");
+                    b.Property<uint?>("HomeId")
+                        .HasColumnType("int unsigned");
 
                     b.Property<string>("LastName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -139,39 +160,7 @@ namespace ZarzadzanieDomem.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("HomeId");
-
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ZarzadzanieDomem.Models.Expense", b =>
-                {
-                    b.HasOne("ZarzadzanieDomem.Models.Home", null)
-                        .WithMany("Expenses")
-                        .HasForeignKey("HomeId");
-
-                    b.HasOne("ZarzadzanieDomem.Models.User", null)
-                        .WithMany("Expenses")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("ZarzadzanieDomem.Models.User", b =>
-                {
-                    b.HasOne("ZarzadzanieDomem.Models.Home", null)
-                        .WithMany("Users")
-                        .HasForeignKey("HomeId");
-                });
-
-            modelBuilder.Entity("ZarzadzanieDomem.Models.Home", b =>
-                {
-                    b.Navigation("Expenses");
-
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("ZarzadzanieDomem.Models.User", b =>
-                {
-                    b.Navigation("Expenses");
                 });
 #pragma warning restore 612, 618
         }

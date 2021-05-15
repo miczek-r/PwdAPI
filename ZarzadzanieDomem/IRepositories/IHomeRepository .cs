@@ -13,7 +13,7 @@ namespace ZarzadzanieDomem.IRepositories
         void Create(Home home);
         void Update(Home home, Home changedHome);
         void Delete(Home home);
-        Home GetById(int id);
+        Home GetById(uint id);
         public Home GetByUser(User user);
 
 

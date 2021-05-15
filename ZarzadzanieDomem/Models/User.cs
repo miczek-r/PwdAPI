@@ -11,7 +11,7 @@ namespace ZarzadzanieDomem.Models
     public class User
     {
         [Key]
-        public int UserId { get; set; }
+        public uint UserId { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         [DataType(DataType.Date)]
@@ -24,8 +24,7 @@ namespace ZarzadzanieDomem.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
         public decimal Saldo { get; set; } = 0;
-        public ICollection<Expense> Expenses { get; set; }
-        public int? HomeId { get; set; }
+        public uint? HomeId { get; set; } = null;
         public string? ActivationToken { get; set; }
         public string? PasswordRestorationToken { get; set; }
         public decimal? ExpenseLimit { get; set; }

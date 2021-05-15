@@ -27,11 +27,11 @@ namespace ZarzadzanieDomem.Repositories
             return _context.Users.ToList();
         }
 
-        public User GetById(int id) => _context.Users.FirstOrDefault(u => u.UserId == id);
+        public User GetById(uint id) => _context.Users.FirstOrDefault(u => u.UserId == id);
 
         public User GetUserByEmail(string email) => _context.Users.FirstOrDefault(u => u.Email.Equals(email.Trim()));
 
-        public IEnumerable<User> GetByHomeId(int HomeId) => _context.Users.Where(u => u.HomeId == HomeId);
+        public IEnumerable<User> GetByHomeId(uint HomeId) => _context.Users.Where(u => u.HomeId == HomeId);
 
         public void Save()
         {

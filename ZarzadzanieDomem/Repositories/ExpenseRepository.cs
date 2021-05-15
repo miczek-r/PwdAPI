@@ -22,7 +22,7 @@ namespace ZarzadzanieDomem.Repositories
         {
             _context.Expenses.Add(expense);
         }
-        public Expense GetById(int Id)=> _context.Expenses.FirstOrDefault(e => e.ExpenseId == Id);
+        public Expense GetById(uint Id)=> _context.Expenses.FirstOrDefault(e => e.ExpenseId == Id);
         
         public IEnumerable<Expense> GetAll()
         {
@@ -43,11 +43,11 @@ namespace ZarzadzanieDomem.Repositories
         {
             _context.Expenses.Remove(expense);
         }
-        public IEnumerable<Expense> GetByUserId(int id) => _context.Expenses.Where(e => e.OwnerId == id).ToList();
+        public IEnumerable<Expense> GetByUserId(uint id) => _context.Expenses.Where(e => e.OwnerId == id).ToList();
 
         
 
-        public IEnumerable<Expense> FilterByType(IEnumerable<Expense> expenses,int typeOfExpenseId)
+        public IEnumerable<Expense> FilterByType(IEnumerable<Expense> expenses,uint typeOfExpenseId)
         {
             List<Expense> list = new List<Expense>();
             foreach (var element in expenses)
