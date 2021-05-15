@@ -34,7 +34,7 @@ namespace ZarzadzanieDomem.Controllers
         }
 
         [HttpGet("{id}", Name = "GetHome")]
-        public IActionResult Get(int id)
+        public IActionResult Get(uint id)
         {
             Home home = _homeRepository.GetById(id);
             if (home == null)
@@ -47,7 +47,7 @@ namespace ZarzadzanieDomem.Controllers
 
 
         [HttpGet("UserId/{UserId}", Name = "GetHomeByUserID")]
-        public IActionResult GetHomeByID(int UserId)
+        public IActionResult GetHomeByID(uint UserId)
         {
             User user = _userRepository.GetById(UserId);
             if (user == null)
@@ -64,7 +64,7 @@ namespace ZarzadzanieDomem.Controllers
         }
 
         [HttpGet("AllHomeUsers/{HomeId}")]
-        public IActionResult GetUsersByHomeId(int HomeId)
+        public IActionResult GetUsersByHomeId(uint HomeId)
         {
             if (_homeRepository.GetById(HomeId) == null)
             {
@@ -93,7 +93,7 @@ namespace ZarzadzanieDomem.Controllers
         
         
         [HttpPut]
-        public ActionResult Put(int id,[FromBody] Home home)
+        public ActionResult Put(uint id,[FromBody] Home home)
         {
             if (home == null)
             {
@@ -110,7 +110,7 @@ namespace ZarzadzanieDomem.Controllers
 
         }
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(uint id)
         {
             Home home = _homeRepository.GetById(id);
             if (home == null)

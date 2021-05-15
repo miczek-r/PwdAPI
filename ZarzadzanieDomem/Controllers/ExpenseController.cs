@@ -41,7 +41,7 @@ namespace ZarzadzanieDomem.Controllers
             return Ok(typesOfExpenses);
         }
         [HttpGet("{id}", Name = "GetExpense")]
-        public IActionResult Get(int id)
+        public IActionResult Get(uint id)
         {
             Expense expense = _expenseRepository.GetById(id);
             if (expense == null)
@@ -77,7 +77,7 @@ namespace ZarzadzanieDomem.Controllers
 
         [HttpPut]
 
-        public IActionResult Put(int id, [FromBody] Expense expense)
+        public IActionResult Put(uint id, [FromBody] Expense expense)
         {
             if (expense == null)
             {
@@ -94,7 +94,7 @@ namespace ZarzadzanieDomem.Controllers
             
         }
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(uint id)
         {
            Expense expense = _expenseRepository.GetById(id);
             if (expense == null)
@@ -107,7 +107,7 @@ namespace ZarzadzanieDomem.Controllers
             
         }
         [HttpGet("UserId/{UserId}", Name = "GetAllUserExpenses")]
-        public IActionResult GetExpensesById(int UserId)
+        public IActionResult GetExpensesById(uint UserId)
         {
             User user = _userRepository.GetById(UserId);
             if (user == null)
@@ -123,7 +123,7 @@ namespace ZarzadzanieDomem.Controllers
         }
 
         [HttpGet("HomeId/{HomeId}", Name = "GetHomeExpenses")]
-        public IActionResult GetHomeExpenses(int HomeId)
+        public IActionResult GetHomeExpenses(uint HomeId)
         {
             if (_homeRepository.GetById(HomeId) == null)
             {
@@ -148,7 +148,7 @@ namespace ZarzadzanieDomem.Controllers
         }
 
         [HttpGet("ByTypeAndUser/{TypeId}/{UserId}", Name = "GetAllUserExpensesByType")]
-        public IActionResult GetExpensesByType(int TypeId,int UserId)
+        public IActionResult GetExpensesByType(uint TypeId,uint UserId)
         {
             User user = _userRepository.GetById(UserId);
             if (user == null)

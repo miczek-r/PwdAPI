@@ -9,9 +9,10 @@ namespace ZarzadzanieDomem.Models
     public class Notification
     {
         [Key]
-        public int NotificationId { get; set; }
+        public uint NotificationId { get; set; }
         [Required]
-        public int RecieverId { get; set; }
+        [DataType(DataType.EmailAddress)]
+        public string ReceiverEmail { get; set; }
         [Required]
         public string Text { get; set; }
         [DataType(DataType.Date)]
@@ -19,6 +20,6 @@ namespace ZarzadzanieDomem.Models
         public DateTime NotificationDate { get; set; }
         public bool Read { get; set; } = false;
         public string Sender { get; set; }
-        public int? HomeId { get; set; }
+        public uint? HomeId { get; set; }
     }
 }

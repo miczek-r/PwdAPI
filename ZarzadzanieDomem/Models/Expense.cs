@@ -11,7 +11,7 @@ namespace ZarzadzanieDomem.Models
     public class Expense
     {
         [Key]
-        public int ExpenseId { get; set; }
+        public uint ExpenseId { get; set; }
         [Required]
         public string NameOfExpense { get; set; }
         [Required]
@@ -20,7 +20,7 @@ namespace ZarzadzanieDomem.Models
         [DisplayFormat(DataFormatString = "{yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ExpenseDate { get; set; }
         [Required]
-        public int TypeOfExpenseId { get; set; }
-        public int OwnerId { get; set; }
+        public uint TypeOfExpenseId { get; set; }
+        public uint OwnerId { get; set; }
     }
 }

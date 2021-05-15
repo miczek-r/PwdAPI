@@ -46,7 +46,7 @@ namespace ZarzadzanieDomem.Repositories
         {
             _context.Homes.Remove(home);
         }
-        public Home GetById(int id) => _context.Homes.FirstOrDefault(h => h.HomeId == id);
+        public Home GetById(uint id) => _context.Homes.FirstOrDefault(h => h.HomeId == id);
         public Home GetByUser(User user)
         {
             return _context.Homes.Find(user.HomeId);

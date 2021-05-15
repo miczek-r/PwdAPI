@@ -11,7 +11,7 @@ namespace ZarzadzanieDomem.Models
     public class TypeOfExpense
     {
         [Key]
-        public int TypeOfExpenseId { get; set; }
+        public uint TypeOfExpenseId { get; set; }
         [Required]
         public string Name { get; set; }
 
