@@ -44,6 +44,10 @@ namespace ZarzadzanieDomem.Migrations
 
                     b.HasKey("ExpenseId");
 
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("TypeOfExpenseId");
+
                     b.ToTable("Expenses");
                 });
 
@@ -91,7 +95,7 @@ namespace ZarzadzanieDomem.Migrations
 
                     b.Property<string>("ReceiverEmail")
                         .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<string>("Sender")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -101,6 +105,8 @@ namespace ZarzadzanieDomem.Migrations
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("NotificationId");
+
+                    b.HasIndex("ReceiverEmail");
 
                     b.ToTable("Notifications");
                 });
@@ -163,7 +169,41 @@ namespace ZarzadzanieDomem.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
+                    b.HasIndex("HomeId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ZarzadzanieDomem.Models.Expense", b =>
+                {
+                    b.HasOne("ZarzadzanieDomem.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ZarzadzanieDomem.Models.TypeOfExpense", null)
+                        .WithMany()
+                        .HasForeignKey("TypeOfExpenseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ZarzadzanieDomem.Models.Notification", b =>
+                {
+                    b.HasOne("ZarzadzanieDomem.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("ReceiverEmail")
+                        .HasPrincipalKey("Email")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ZarzadzanieDomem.Models.User", b =>
+                {
+                    b.HasOne("ZarzadzanieDomem.Models.Home", null)
+                        .WithMany()
+                        .HasForeignKey("HomeId");
                 });
 #pragma warning restore 612, 618
         }

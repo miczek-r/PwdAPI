@@ -9,7 +9,7 @@ namespace ZarzadzanieDomem.IRepositories
         public IEnumerable<Notification> GetByUserEmail(string email);
         Notification GetById(uint id);
         void Save();
-        void Create(Notification value);
+        void Create(Notification notification);
         void Delete(Notification notification);
         void ChangeToSeen(Notification notification);
 

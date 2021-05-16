@@ -19,6 +19,14 @@ namespace ZarzadzanieDomem.Models.Context
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+            modelBuilder.Entity<User>()
+                .HasMany<Expense>().WithOne().HasForeignKey(x => x.OwnerId);
+            modelBuilder.Entity<Home>()
+                .HasMany<User>().WithOne().HasForeignKey(x => x.HomeId);
+            modelBuilder.Entity<TypeOfExpense>()
+                .HasMany<Expense>().WithOne().HasForeignKey(x => x.TypeOfExpenseId);
+            modelBuilder.Entity<User>()
+                .HasMany<Notification>().WithOne().HasForeignKey(x => x.ReceiverEmail).HasPrincipalKey(x => x.Email);
         }
     }
 }

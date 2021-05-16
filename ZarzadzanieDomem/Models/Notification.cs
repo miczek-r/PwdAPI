@@ -20,5 +20,6 @@ namespace ZarzadzanieDomem.Models
         public bool Read { get; set; } = false;
         public string Sender { get; set; }
         public uint? HomeId { get; set; }
+
     }
 }

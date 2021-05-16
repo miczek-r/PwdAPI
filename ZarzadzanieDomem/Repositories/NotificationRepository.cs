@@ -25,9 +25,9 @@ namespace ZarzadzanieDomem.Repositories
         {
             _context.SaveChanges();
         }
-        public void Create(Notification value)
+        public void Create(Notification notification)
         {
-            _context.Notifications.Add(value);
+            _context.Notifications.Add(notification);
         }
         public void Delete(Notification notification)
         {
