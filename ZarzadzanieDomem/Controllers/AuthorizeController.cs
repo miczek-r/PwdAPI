@@ -42,33 +42,16 @@ namespace ZarzadzanieDomem.Controllers
                     return BadRequest("User is not activated");
                 }
                 IEnumerable<Expense> expenses = _expenseRepository.GetByUserId(user.UserId);
-
-                decimal tempSaldo = 0;
-                foreach (Expense el in expenses)
+                User userToUpdate = user;
+                foreach (Expense expense in expenses)
                 {
-                    int temp = DateTime.Compare(el.ExpenseDate, DateTime.Now);
-                    if (temp <= 0)
+                    int temp = DateTime.Compare(expense.ExpenseDate, DateTime.Now);
+                    if (temp <= 0 && expense.Accounted==false)
                     {
-                        el.Accounted = true;
-                    }
-                    else if (temp > 0)
-                    {
-                        el.Accounted = false;
+                        expense.Accounted = true;
+                        userToUpdate.Saldo += (expense.TypeOfExpenseId == 1) ? expense.Amount : -(expense.Amount);
                     }
                 }
-                foreach (Expense el in expenses)
-                {
-                    if (el.Accounted && el.TypeOfExpenseId == 1)
-                    {
-                        tempSaldo += el.Amount;
-                    }
-                    else if (el.Accounted && el.TypeOfExpenseId != 1)
-                    {
-                        tempSaldo -= el.Amount;
-                    }
-                }
-                user.Saldo = tempSaldo;
-                User userToUpdate = _authorizeRepository.GetUserByEmail(auth);
                 _userRepository.Update(userToUpdate, user);
                 _expenseRepository.Save();
                 return Ok(user);
