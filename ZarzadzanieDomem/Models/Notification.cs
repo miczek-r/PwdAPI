@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +17,7 @@ namespace ZarzadzanieDomem.Models
         [Required]
         public string Text { get; set; }
         [DataType(DataType.Date)]
+        [Column(TypeName = "date")]
         [DisplayFormat(DataFormatString = "{yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime NotificationDate { get; set; }
         public bool Read { get; set; } = false;

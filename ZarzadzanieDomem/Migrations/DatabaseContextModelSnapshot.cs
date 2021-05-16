@@ -27,7 +27,7 @@ namespace ZarzadzanieDomem.Migrations
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<DateTime>("ExpenseDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<string>("NameOfExpense")
                         .IsRequired()
@@ -81,7 +81,7 @@ namespace ZarzadzanieDomem.Migrations
                         .HasColumnType("int unsigned");
 
                     b.Property<DateTime>("NotificationDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<bool>("Read")
                         .HasColumnType("tinyint(1)");
@@ -127,7 +127,7 @@ namespace ZarzadzanieDomem.Migrations
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<string>("Email")
                         .IsRequired()

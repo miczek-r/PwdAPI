@@ -17,6 +17,7 @@ namespace ZarzadzanieDomem.Models
         [Required]
         public decimal Amount { get; set; }
         [DataType(DataType.Date)]
+        [Column(TypeName = "date")]
         [DisplayFormat(DataFormatString = "{yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ExpenseDate { get; set; }
         [Required]

@@ -16,6 +16,7 @@ namespace ZarzadzanieDomem.Models
         public string? LastName { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Column(TypeName="date")]
         public DateTime? DateOfBirth { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]

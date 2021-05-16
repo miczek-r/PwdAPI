@@ -74,7 +74,7 @@ namespace ZarzadzanieDomem.Controllers
         }
 
         // PUT api/<UserController>
-        [HttpPut("{id}")]
+        [HttpPut]
         public IActionResult Put([FromBody] User user)
         {
             if (user == null)
