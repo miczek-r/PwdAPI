@@ -49,7 +49,7 @@ namespace ZarzadzanieDomem.Controllers
                     if (temp <= 0 && expense.Accounted==false)
                     {
                         expense.Accounted = true;
-                        userToUpdate.Saldo += (expense.TypeOfExpenseId == 1) ? expense.Amount : -(expense.Amount);
+                        user.Saldo += (expense.TypeOfExpenseId == 1) ? expense.Amount : -(expense.Amount);
                     }
                 }
                 _userRepository.Update(userToUpdate, user);

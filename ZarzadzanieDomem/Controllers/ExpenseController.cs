@@ -70,7 +70,7 @@ namespace ZarzadzanieDomem.Controllers
             {
                 User user = _userRepository.GetById(expense.OwnerId);
                 User userToUpdate = user;
-                userToUpdate.Saldo += (expense.TypeOfExpenseId == 1) ? expense.Amount : -(expense.Amount);
+                user.Saldo += (expense.TypeOfExpenseId == 1) ? expense.Amount : -(expense.Amount);
                 _userRepository.Update(userToUpdate, user);
                 _userRepository.Save();
             }
@@ -120,7 +120,7 @@ namespace ZarzadzanieDomem.Controllers
             {
                 User user = _userRepository.GetById(expense.OwnerId);
                 User userToUpdate = user;
-                userToUpdate.Saldo += (expense.TypeOfExpenseId == 1) ? -(expense.Amount) : expense.Amount;
+                user.Saldo += (expense.TypeOfExpenseId == 1) ? -(expense.Amount) : expense.Amount;
                 _userRepository.Update(userToUpdate, user);
                 _userRepository.Save();
             }
