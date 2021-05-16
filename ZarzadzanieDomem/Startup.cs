@@ -37,6 +37,7 @@ namespace ZarzadzanieDomem
             services.AddScoped<IExpenseRepository, ExpenseRepository>();
             services.AddScoped<IHomeRepository, HomeRepository>();
             services.AddScoped<IAuthorizeRepository, AuthorizeRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
 
             services.AddControllers();
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ZarzadzanieDomem.Models;
 
 namespace ZarzadzanieDomem.IRepositories
@@ -13,10 +10,12 @@ namespace ZarzadzanieDomem.IRepositories
         public IEnumerable<Expense> GetAll();
         public void Update(Expense expense, Expense changedExpense);
         public void Delete(Expense expense);
+        public void Delete(TypeOfExpense typeOfExpense);
         public void Save();
         public IEnumerable<Expense> GetByUserId(uint id);
         public IEnumerable<Expense> FilterByType(IEnumerable<Expense> expenses, uint typeOfExpenseId);
         public IEnumerable<TypeOfExpense> GetAllExpenseTypes();
+        public TypeOfExpense GetExpenseType(uint Id);
         public void CreateTypeOfExpense(TypeOfExpense typeOfExpense);
     }
 }

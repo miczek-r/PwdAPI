@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ZarzadzanieDomem.Models;
 
 namespace ZarzadzanieDomem.IRepositories
@@ -16,7 +13,7 @@ namespace ZarzadzanieDomem.IRepositories
         void Delete(Notification notification);
         void ChangeToSeen(Notification notification);
 
-        
+
 
     }
 }

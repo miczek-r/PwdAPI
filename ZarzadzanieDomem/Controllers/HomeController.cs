@@ -1,13 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ZarzadzanieDomem.IRepositories;
 using ZarzadzanieDomem.Models;
-using ZarzadzanieDomem.Models.Context;
-using ZarzadzanieDomem.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,12 +15,12 @@ namespace ZarzadzanieDomem.Controllers
         private readonly IHomeRepository _homeRepository;
         private readonly IUserRepository _userRepository;
 
-        public HomeController(DatabaseContext context)
+        public HomeController(IHomeRepository homeRepository, IUserRepository userRepository)
         {
-            _homeRepository = new HomeRepository(context);
-            _userRepository = new UserRepository(context);
-
+            _homeRepository = homeRepository;
+            _userRepository = userRepository;
         }
+
         [HttpGet]
         public IActionResult Get()
         {
@@ -71,7 +66,7 @@ namespace ZarzadzanieDomem.Controllers
                 return NotFound("This home does not exists");
             }
             IEnumerable<User> users = _userRepository.GetByHomeId(HomeId);
-            if (users.Count()==0)
+            if (users.Any())
             {
                 return NotFound("Home has no users");
             }
@@ -90,8 +85,8 @@ namespace ZarzadzanieDomem.Controllers
             _homeRepository.Save();
             return CreatedAtRoute("GetHome", new { Id = home.HomeId }, home);
         }
-        
-        
+
+
         [HttpPut]
         public ActionResult Put([FromBody] Home home)
         {
@@ -104,7 +99,7 @@ namespace ZarzadzanieDomem.Controllers
             {
                 return NotFound("Home not found");
             }
-            _homeRepository.Update(homeToUpdate,home);
+            _homeRepository.Update(homeToUpdate, home);
             _homeRepository.Save();
             return NoContent();
 

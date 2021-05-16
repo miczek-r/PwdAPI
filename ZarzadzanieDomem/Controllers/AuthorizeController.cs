@@ -2,13 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ZarzadzanieDomem.Authentication;
 using ZarzadzanieDomem.IRepositories;
 using ZarzadzanieDomem.Models;
-using ZarzadzanieDomem.Models.Context;
-using ZarzadzanieDomem.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,9 +14,9 @@ namespace ZarzadzanieDomem.Controllers
     [ApiController]
     public class AuthorizeController : ControllerBase
     {
-        private IAuthorizeRepository _authorizeRepository;
-        private IUserRepository _userRepository;
-        private IExpenseRepository _expenseRepository;
+        private readonly IAuthorizeRepository _authorizeRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IExpenseRepository _expenseRepository;
 
         public AuthorizeController(IUserRepository userRepository, IAuthorizeRepository authorizeRepository, IExpenseRepository expenseRepository)
         {
@@ -28,10 +24,11 @@ namespace ZarzadzanieDomem.Controllers
             _authorizeRepository = authorizeRepository;
             _expenseRepository = expenseRepository;
         }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Login([FromBody]Auth auth)
+        public IActionResult Login([FromBody] Auth auth)
         {
             try
             {
@@ -76,12 +73,12 @@ namespace ZarzadzanieDomem.Controllers
                 _expenseRepository.Save();
                 return Ok(user);
             }
-            catch (UnauthorizedAccessException e) 
+            catch (UnauthorizedAccessException)
             {
                 return BadRequest("Wrong password or email");
             }
-            
-            
+
+
         }
         [HttpPut("RestorePassword/{token}/{password}")]
         public IActionResult RestorePassword(string token, string password)

@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ZarzadzanieDomem.IRepositories;
 using ZarzadzanieDomem.Models;
-using ZarzadzanieDomem.Models.Context;
-using ZarzadzanieDomem.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,11 +13,11 @@ namespace ZarzadzanieDomem.Controllers
     {
         private readonly INotificationRepository _notificationRepository;
 
-        public NotificationController(DatabaseContext context)
+        public NotificationController(INotificationRepository notificationRepository)
         {
-            _notificationRepository = new NotificationRepository(context);
-
+            _notificationRepository = notificationRepository;
         }
+
         [HttpGet]
         public IActionResult Get()
         {
@@ -34,7 +28,7 @@ namespace ZarzadzanieDomem.Controllers
         [HttpGet("UserEmail/{email}")]
         public IActionResult GetByUserEmail(string email)
         {
-            IEnumerable < Notification > notifications = _notificationRepository.GetByUserEmail(email);
+            IEnumerable<Notification> notifications = _notificationRepository.GetByUserEmail(email);
             if (notifications == null)
             {
                 return NotFound("Notifications not found");
@@ -49,7 +43,7 @@ namespace ZarzadzanieDomem.Controllers
             {
                 return BadRequest("Notification is empty.");
             }
-            else if(notification.Sender == notification.ReceiverEmail)
+            else if (notification.Sender == notification.ReceiverEmail)
             {
                 return BadRequest("You can't send a notification to yourself");
             }
@@ -86,8 +80,8 @@ namespace ZarzadzanieDomem.Controllers
         [HttpPut("ChangeToSeen/{id}")]
         public IActionResult ChangeToSeen(uint id)
         {
-            Notification notification =  _notificationRepository.GetById(id);
-            if (notification==null)
+            Notification notification = _notificationRepository.GetById(id);
+            if (notification == null)
             {
                 return NotFound("Notification not found");
             }

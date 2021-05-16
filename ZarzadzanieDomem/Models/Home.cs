@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ZarzadzanieDomem.Models
 {
@@ -14,9 +10,11 @@ namespace ZarzadzanieDomem.Models
         public uint HomeId { get; set; }
         [Required]
         public string HomeName { get; set; }
+#nullable enable
         public string? Street { get; set; }
         public string? HouseNumber { get; set; }
         public string? PostCode { get; set; }
         public string? City { get; set; }
+#nullable disable
     }
 }

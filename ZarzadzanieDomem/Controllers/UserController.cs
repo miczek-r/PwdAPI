@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ZarzadzanieDomem.IRepositories;
 using ZarzadzanieDomem.Models;
-using ZarzadzanieDomem.Models.Context;
-using ZarzadzanieDomem.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -105,6 +101,10 @@ namespace ZarzadzanieDomem.Controllers
             {
                 return BadRequest("Home does not exists");
             }
+            if (user.HomeId != null)
+            {
+                return Conflict("User already has a home");
+            }
 
             User userToUpdate = user;
             userToUpdate.HomeId = HomeId;
@@ -117,15 +117,23 @@ namespace ZarzadzanieDomem.Controllers
         [HttpPut("LeaveHome/{UserId}")]
         public IActionResult LeaveHome(uint UserId)
         {
+
             User user = _userRepository.GetById(UserId);
             if (user == null)
             {
                 return BadRequest("User does not exists");
             }
+            uint? HomeId = user.HomeId;
             User userToUpdate = user;
             userToUpdate.HomeId = null;
             _userRepository.Update(userToUpdate, user);
             _userRepository.Save();
+            if (HomeId != null && !_userRepository.GetByHomeId(HomeId).Any())
+            {
+                Home home = _homeRepository.GetById(HomeId);
+                _homeRepository.Delete(home);
+                _homeRepository.Save();
+            }
             return NoContent();
         }
 

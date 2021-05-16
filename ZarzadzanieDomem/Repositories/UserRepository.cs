@@ -1,13 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
 using ZarzadzanieDomem.IRepositories;
 using ZarzadzanieDomem.Models;
 using ZarzadzanieDomem.Models.Context;
@@ -31,7 +23,7 @@ namespace ZarzadzanieDomem.Repositories
 
         public User GetUserByEmail(string email) => _context.Users.FirstOrDefault(u => u.Email.Equals(email.Trim()));
 
-        public IEnumerable<User> GetByHomeId(uint HomeId) => _context.Users.Where(u => u.HomeId == HomeId);
+        public IEnumerable<User> GetByHomeId(uint? HomeId) => _context.Users.Where(u => u.HomeId == HomeId);
 
         public void Save()
         {
@@ -55,6 +47,6 @@ namespace ZarzadzanieDomem.Repositories
         {
             _context.Users.Remove(user);
         }
-        
+
     }
 }

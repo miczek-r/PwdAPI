@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
 using ZarzadzanieDomem.Authentication;
 using ZarzadzanieDomem.IRepositories;
 using ZarzadzanieDomem.Models;
@@ -43,17 +38,21 @@ namespace ZarzadzanieDomem.Repositories
                     throw new UnauthorizedAccessException();
             return user;
         }
-        public void SendVerificationEmail(User user, string token)
+
+        private static void SendEmail(User user, string subject, string body)
         {
             NetworkCredential login = new NetworkCredential("testowymiczek.@gmail.com", "!Admin123");
-            SmtpClient client = new SmtpClient("smtp.gmail.com");
-            client.Port = 587;
-            client.EnableSsl = true;
-            client.Credentials = login;
+            SmtpClient client = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                EnableSsl = true,
+                Credentials = login
+            };
+
             MailMessage msg = new MailMessage { From = new MailAddress("testowymiczek.@gmail.com", "no-reply@CashBuddy.com", Encoding.UTF8) };
             msg.To.Add(new MailAddress(user.Email));
-            msg.Subject = "Rejestracja w serwisie PWD";
-            msg.Body = "Kliknij w link, aby potwierdzic swoj email: \n" + token;
+            msg.Subject = subject;
+            msg.Body = body;
             msg.BodyEncoding = Encoding.UTF8;
             msg.IsBodyHtml = true;
             msg.Priority = MailPriority.High;
@@ -61,23 +60,15 @@ namespace ZarzadzanieDomem.Repositories
             string userstate = "Testowanie";
             client.SendAsync(msg, userstate);
         }
+
+        public void SendVerificationEmail(User user, string token)
+        {
+            SendEmail(user, "Rejestracja w serwisie PWD", "Kliknij w link, aby potwierdzic swoj email: \n" + token);
+        }
+
         public void SendRestorationEmail(User user, string token)
         {
-            NetworkCredential login = new NetworkCredential("testowymiczek.@gmail.com", "!Admin123");
-            SmtpClient client = new SmtpClient("smtp.gmail.com");
-            client.Port = 587;
-            client.EnableSsl = true;
-            client.Credentials = login;
-            MailMessage msg = new MailMessage { From = new MailAddress("testowymiczek.@gmail.com", "no-reply@CashBuddy.com", Encoding.UTF8) };
-            msg.To.Add(new MailAddress(user.Email));
-            msg.Subject = "CashBuddy: Zmiana hasla";
-            msg.Body = "W serwisie cashbuddy zostala zgloszona proba zmiany hasla na twoim koncie. Jesli to ty, to kliknij w link: \n" + token;
-            msg.BodyEncoding = Encoding.UTF8;
-            msg.IsBodyHtml = true;
-            msg.Priority = MailPriority.High;
-            msg.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
-            string userstate = "Testowanie";
-            client.SendAsync(msg, userstate);
+            SendEmail(user, "CashBuddy: Zmiana hasla", "W serwisie cashbuddy zostala zgloszona proba zmiany hasla na twoim koncie. Jesli to ty, to kliknij w link: \n" + token);
         }
 
         public string TokenGenerator(User user)
@@ -99,8 +90,8 @@ namespace ZarzadzanieDomem.Repositories
         {
             try
             {
-                byte[] salt;
-                new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+                byte[] salt = new byte[16];
+                new RNGCryptoServiceProvider().GetBytes(salt);
                 var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000);
                 byte[] hash = pbkdf2.GetBytes(20);
                 byte[] hashBytes = new byte[36];
@@ -111,13 +102,13 @@ namespace ZarzadzanieDomem.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in base64Encode" + ex.Message);
+                throw new ArithmeticException("Error in password base64 conversion" + ex.Message);
             }
         } //this function Convert to Decord your Password
         public string DecodeFrom64(string encodedData)
         {
-            System.Text.UTF8Encoding encoder = new System.Text.UTF8Encoding();
-            System.Text.Decoder utf8Decode = encoder.GetDecoder();
+            UTF8Encoding encoder = new UTF8Encoding();
+            Decoder utf8Decode = encoder.GetDecoder();
             byte[] todecode_byte = Convert.FromBase64String(encodedData);
             int charCount = utf8Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
             char[] decoded_char = new char[charCount];
