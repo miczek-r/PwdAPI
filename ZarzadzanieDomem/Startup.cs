@@ -1,23 +1,18 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ZarzadzanieDomem.IRepositories;
 using ZarzadzanieDomem.Models.Context;
+using ZarzadzanieDomem.Repositories;
 
 namespace ZarzadzanieDomem
 {
     public class Startup
     {
-        private const string CorsPolicyName = "MyPolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,27 +23,27 @@ namespace ZarzadzanieDomem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
 #if DEBUG
+            byte[] encoded = Convert.FromBase64String(Configuration.GetConnectionString("DockerDB"));
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DockerDB"), new MySqlServerVersion(new Version(8, 0, 21))));
-#else
+                options.UseMySql(System.Text.Encoding.UTF8.GetString(encoded), new MySqlServerVersion(new Version(8, 0, 21))));
+#else       
+            byte[] encoded = Convert.FromBase64String(Configuration.GetConnectionString("Production"));
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("Production")));
+                options.UseMySql(System.Text.Encoding.UTF8.GetString(encoded), new MariaDbServerVersion(new Version(10, 3, 27))));
 #endif
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IExpenseRepository, ExpenseRepository>();
+            services.AddScoped<IHomeRepository, HomeRepository>();
+            services.AddScoped<IAuthorizeRepository, AuthorizeRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+
             services.AddControllers();
 
             services.AddSwaggerGen();
-            services.AddCors(o => o.AddPolicy(CorsPolicyName, builder =>
 
-            {
-
-                builder.AllowAnyOrigin()
-
-                       .AllowAnyMethod()
-
-                       .AllowAnyHeader();
-
-            }));
+            services.AddCors();
 
         }
 
@@ -60,8 +55,6 @@ namespace ZarzadzanieDomem
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
@@ -72,6 +65,15 @@ namespace ZarzadzanieDomem
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(x => x
+             .AllowAnyMethod()
+             .AllowAnyHeader()
+             .SetIsOriginAllowed(origin => true) // allow any origin
+             .AllowCredentials()); // allow credentials
+
+
+            app.UseHttpsRedirection();
 
             app.UseEndpoints(endpoints =>
             {
