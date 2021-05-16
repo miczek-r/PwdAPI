@@ -65,8 +65,8 @@ namespace ZarzadzanieDomem.Controllers
             {
                 return NotFound("This home does not exists");
             }
-            IEnumerable<User> users = _userRepository.GetByHomeId(HomeId);
-            if (users.Any())
+            IEnumerable<User> users = _userRepository.GetByHomeId(HomeId).ToList();
+            if (!users.Any())
             {
                 return NotFound("Home has no users");
             }

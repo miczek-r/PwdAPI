@@ -65,6 +65,16 @@ namespace ZarzadzanieDomem.Controllers
             }
             _expenseRepository.Create(expense);
             _expenseRepository.Save();
+
+            if (expense.Accounted)
+            {
+                User user = _userRepository.GetById(expense.OwnerId);
+                User userToUpdate = user;
+                userToUpdate.Saldo += (expense.TypeOfExpenseId == 1) ? expense.Amount : -(expense.Amount);
+                _userRepository.Update(userToUpdate, user);
+                _userRepository.Save();
+            }
+
             return CreatedAtRoute("GetExpense", new { Id = expense.ExpenseId }, expense);
         }
         [HttpPost("TypeOfExpense")]
@@ -105,6 +115,14 @@ namespace ZarzadzanieDomem.Controllers
             if (expense == null)
             {
                 return NotFound("Expense not found");
+            }
+            if (expense.Accounted)
+            {
+                User user = _userRepository.GetById(expense.OwnerId);
+                User userToUpdate = user;
+                userToUpdate.Saldo += (expense.TypeOfExpenseId == 1) ? -(expense.Amount) : expense.Amount;
+                _userRepository.Update(userToUpdate, user);
+                _userRepository.Save();
             }
             _expenseRepository.Delete(expense);
             _expenseRepository.Save();

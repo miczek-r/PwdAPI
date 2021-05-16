@@ -58,11 +58,11 @@ namespace ZarzadzanieDomem.Controllers
                 }
                 foreach (Expense el in expenses)
                 {
-                    if (el.Accounted && el.TypeOfExpenseId == 2)
+                    if (el.Accounted && el.TypeOfExpenseId == 1)
                     {
                         tempSaldo += el.Amount;
                     }
-                    else if (el.Accounted && el.TypeOfExpenseId != 2)
+                    else if (el.Accounted && el.TypeOfExpenseId != 1)
                     {
                         tempSaldo -= el.Amount;
                     }
