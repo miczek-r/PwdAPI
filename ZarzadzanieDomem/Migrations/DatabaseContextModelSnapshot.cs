@@ -23,6 +23,9 @@ namespace ZarzadzanieDomem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int unsigned");
 
+                    b.Property<bool>("Accounted")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(65,30)");
 

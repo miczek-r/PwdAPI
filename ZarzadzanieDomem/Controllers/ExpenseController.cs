@@ -58,6 +58,15 @@ namespace ZarzadzanieDomem.Controllers
             {
                 return BadRequest("Expense is empty");
             }
+            int temp=DateTime.Compare(expense.ExpenseDate,DateTime.Now);
+            if (temp <= 0)
+            {
+                expense.Accounted = true;
+            }
+            else if(temp > 0)
+            {
+                expense.Accounted = false;
+            }
             _expenseRepository.Create(expense);
             _expenseRepository.Save();
             return CreatedAtRoute("GetExpense", new { Id = expense.ExpenseId }, expense);

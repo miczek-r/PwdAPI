@@ -23,5 +23,6 @@ namespace ZarzadzanieDomem.Models
         [Required]
         public uint TypeOfExpenseId { get; set; }
         public uint OwnerId { get; set; }
+        public bool Accounted { get; set; }
     }
 }
