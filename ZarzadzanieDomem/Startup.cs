@@ -26,6 +26,7 @@ namespace ZarzadzanieDomem
 
 #if DEBUG
             byte[] encoded = Convert.FromBase64String(Configuration.GetConnectionString("DockerDB"));
+            var test = System.Text.Encoding.UTF8.GetString(encoded);
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseMySql(System.Text.Encoding.UTF8.GetString(encoded), new MySqlServerVersion(new Version(8, 0, 21))));
 #else       
